@@ -1,0 +1,69 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_libserialport/flutter_libserialport.dart';
+import 'package:get/get.dart';
+
+class SerialServices extends GetxService {
+  String? portName;
+  SerialPort? port;
+  // late final SerialPortReader reader;
+  // late final Stream readerStream;
+
+  Future<SerialServices> init() async {
+    if (SerialPort.availablePorts.isNotEmpty) {
+      port = await initSerialServices(SerialPort.availablePorts.first);
+    }
+
+    return this;
+  }
+
+  Future<SerialPort?> initSerialServices(String portName) async {
+    try {
+      port?.dispose();
+      port?.close();
+      port = null;
+      port = SerialPort(portName);
+      port?.config.baudRate = 115200;
+      port?.config.stopBits = 1;
+      port?.config.bits = 8;
+      // port?.config.xonXoff = SerialPortXonXoff.disabled;
+      port?.config.parity = SerialPortParity.none;
+      port?.config.setFlowControl(SerialPortFlowControl.none);
+
+      // port?.openReadWrite();
+      if (!(port?.isOpen ?? true)) {
+        port?.openReadWrite();
+      }
+
+      log('Serial Service Status: ${port?.isOpen}');
+      return port;
+    } catch (e) {
+      log('Serial Service Status: ${port?.isOpen}');
+      if (kDebugMode) rethrow;
+      return null;
+    }
+  }
+
+  int write(String data) {
+    try {
+      if (port?.isOpen ?? false) {
+        final bytes = Uint8List.fromList(utf8.encode(data));
+        return port!.write(bytes, timeout: 0);
+      }
+      return -1;
+    } catch (e) {
+      if (kDebugMode) rethrow;
+      return -1;
+    }
+  }
+
+  void disposePort() {
+    try {
+      port?.dispose();
+    } catch (e) {
+      if (kDebugMode) rethrow;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+name: serial_test
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_form_builder: ^7.6.0
+  flutter_libserialport: ^0.3.0
+  form_builder_validators: ^8.3.0
+  get: ^4.6.5
+  get_storage: ^2.0.3
+  path_provider: ^2.0.11
+  rxdart: ^0.27.5
+  url_launcher: ^6.1.5
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
+  flutter_test:
+    sdk: flutter
+  lint: ^1.10.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+flutter_icons:
+  windows:
+    generate: true
+    image_path: "assets/images/tachlog_logo.png"
+  linux:
+    generate: true
+    image_path: "assets/images/tachlog_logo.png"
+

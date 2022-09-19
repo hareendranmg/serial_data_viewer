@@ -1,0 +1,66 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  exclude:
+  - test/*
+  plugins:
+    - dart_code_metrics
+  strong-mode:
+    implicit-casts: false
+  errors:
+    missing_required_param: warning
+    require_trailing_commas: warning
+    missing_return: warning
+    todo: info
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    prefer_relative_imports: true
+    constant_identifier_names: false
+    sort_constructors_first: false
+    avoid_classes_with_only_static_members: false
+    always_use_package_imports: false
+
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    maintainability-index: 50
+    maximum-nesting: 5
+    number-of-parameters: 5
+    source-lines-of-code: 100
+    technical-debt:
+      threshold: 1
+      todo-cost: 4
+      ignore-cost: 8
+      ignore-for-file-cost: 16
+      as-dynamic-cost: 16
+      deprecated-annotations-cost: 2
+      file-nullsafety-migration-cost: 2
+      unit-type: "hours"
+  metrics-exclude:
+    - test/*
+  rules:
+    - avoid-unused-parameters
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - binary-expression-operand-order
+    - double-literal-format
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-object-declaration
+    - prefer-conditional-expressions
+    - prefer-first
+    - prefer-last
+    - prefer-match-file-name:
+        exclude:
+          - test/**
+          - lib/app/routes/**
+          - lib/app/utils/**
+    - prefer-trailing-comma
+
