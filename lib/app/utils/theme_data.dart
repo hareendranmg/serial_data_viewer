@@ -7,7 +7,7 @@ const Color textColor = Color(0xFF121212);
 const textColorMedGrey = Color(0xFF202020);
 const textColorGrey = Color(0xFF616161);
 
-final themeData = ThemeData.light().copyWith(
+final themeData = ThemeData().copyWith(
   primaryColor: primaryColor,
   scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,

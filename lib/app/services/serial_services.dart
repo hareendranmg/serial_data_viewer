@@ -12,25 +12,19 @@ class SerialServices extends GetxService {
   // late final Stream readerStream;
 
   Future<SerialServices> init() async {
-    if (SerialPort.availablePorts.isNotEmpty) {
-      port = await initSerialServices(SerialPort.availablePorts.first);
-    }
-
     return this;
   }
 
-  Future<SerialPort?> initSerialServices(String portName) async {
+  Future<SerialPort?> initSerialServices({
+    required String portName,
+    required SerialPortConfig portConfig,
+  }) async {
     try {
       port?.dispose();
       port?.close();
       port = null;
       port = SerialPort(portName);
-      port?.config.baudRate = 115200;
-      port?.config.stopBits = 1;
-      port?.config.bits = 8;
-      // port?.config.xonXoff = SerialPortXonXoff.disabled;
-      port?.config.parity = SerialPortParity.none;
-      port?.config.setFlowControl(SerialPortFlowControl.none);
+      port?.config = portConfig;
 
       // port?.openReadWrite();
       if (!(port?.isOpen ?? true)) {
@@ -64,6 +58,16 @@ class SerialServices extends GetxService {
       port?.dispose();
     } catch (e) {
       if (kDebugMode) rethrow;
+    }
+  }
+
+  Future<List<SerialPort>> getPorts() async {
+    try {
+      final ports = SerialPort.availablePorts;
+      return ports.map((e) => SerialPort(e)).toList();
+    } catch (e) {
+      if (kDebugMode) rethrow;
+      return [];
     }
   }
 }
