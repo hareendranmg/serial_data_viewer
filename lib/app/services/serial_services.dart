@@ -24,9 +24,13 @@ class SerialServices extends GetxService {
       port?.close();
       port = null;
       port = SerialPort(portName);
-      port?.config = portConfig;
 
-      port?.openReadWrite();
+      if (port?.isOpen ?? false) {
+        port?.close();
+      }
+
+      port?.openRead();
+      // port?.config = portConfig;
 
       if (kDebugMode) {
         print('is open: ${port?.isOpen}');
