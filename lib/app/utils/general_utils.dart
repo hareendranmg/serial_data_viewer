@@ -76,3 +76,5 @@ String getGreeting() {
     return 'Hello';
   }
 }
+
+enum Menus { home, settings }

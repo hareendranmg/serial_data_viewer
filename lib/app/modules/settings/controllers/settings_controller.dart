@@ -1,23 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
-  //TODO: Implement SettingsController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  late final sidebarScrollController = ScrollController();
 
   @override
   void onClose() {
+    sidebarScrollController.dispose();
     super.onClose();
   }
-
-  void increment() => count.value++;
 }
