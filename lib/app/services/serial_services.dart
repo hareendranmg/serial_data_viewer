@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
@@ -20,22 +19,24 @@ class SerialServices extends GetxService {
     required SerialPortConfig portConfig,
   }) async {
     try {
+      port?.close();
       port?.dispose();
       port?.close();
       port = null;
       port = SerialPort(portName);
       port?.config = portConfig;
 
-      // port?.openReadWrite();
-      if (!(port?.isOpen ?? true)) {
-        port?.openReadWrite();
-      }
+      port?.openReadWrite();
 
-      log('Serial Service Status: ${port?.isOpen}');
+      if (kDebugMode) {
+        print('is open: ${port?.isOpen}');
+      }
       return port;
     } catch (e) {
-      log('Serial Service Status: ${port?.isOpen}');
-      if (kDebugMode) rethrow;
+      if (kDebugMode) {
+        print('error: $e');
+        rethrow;
+      }
       return null;
     }
   }

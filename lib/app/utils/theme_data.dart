@@ -20,6 +20,7 @@ final themeData = ThemeData().copyWith(
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       side: const BorderSide(color: primaryColor),
+      foregroundColor: primaryColor,
     ),
   ),
   // textTheme: GoogleFonts.nunitoTextTheme(),

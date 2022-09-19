@@ -32,10 +32,40 @@ class SettingsController extends SettingsBaseController {
       portConfig.stopBits = data?['stopbits'] as int;
       portConfig.parity = data?['parity'] as int;
       portConfig.setFlowControl(data?['flowcontrol'] as int);
-      Get.find<SerialServices>().initSerialServices(
+      final port = await Get.find<SerialServices>().initSerialServices(
         portName: data?['port'] as String,
         portConfig: portConfig,
       );
+
+      if (port == null) {
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error'),
+            content: const Text(
+              'Could not open port. Please check your settings and reconnect the device',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Settings saved and port opened'),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
