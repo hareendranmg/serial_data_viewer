@@ -18,7 +18,10 @@ final brownGradient = [Colors.brown, Colors.brown.shade200];
 final cyanGradient = [Colors.cyan, Colors.cyan.shade200];
 final orangeGradient = [Colors.orange[600]!, Colors.orange.shade200];
 
+const HEIGHT_06 = SizedBox(height: 6);
 const HEIGHT_12 = SizedBox(height: 12);
+const WIDTH_06 = SizedBox(width: 6);
+const WIDTH_12 = SizedBox(width: 12);
 
 void showSnackBar({
   required SnackbarType type,
