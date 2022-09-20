@@ -21,7 +21,6 @@ class SerialServices extends GetxService {
     try {
       port?.close();
       port?.dispose();
-      port?.close();
       port = null;
       port = SerialPort(portName);
 
@@ -29,13 +28,18 @@ class SerialServices extends GetxService {
         port?.close();
       }
 
-      port?.openRead();
-      // port?.config = portConfig;
+      port?.openReadWrite();
+      await 2.delay();
+      port?.config.baudRate = portConfig.baudRate;
+      port?.config.bits = portConfig.bits;
+      port?.config.stopBits = portConfig.stopBits;
+      port?.config.parity = portConfig.parity;
+      // port?.config.setFlowControl(portConfig.f);
 
       if (kDebugMode) {
         print('is open: ${port?.isOpen}');
       }
-      return port;
+      return port?.isOpen ?? false ? port : null;
     } catch (e) {
       if (kDebugMode) {
         print('error: $e');

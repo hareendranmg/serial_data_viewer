@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/serial_services.dart';
 
 class HomeBaseController extends GetxController {
-  final box = GetStorage();
+  late final SharedPreferences box;
   final formKey = GlobalKey<FormBuilderState>();
   late final ScrollController scrollController;
   final serialServices = Get.find<SerialServices>();

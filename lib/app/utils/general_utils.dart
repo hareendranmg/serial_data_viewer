@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:window_size/window_size.dart';
 
 import '../services/serial_services.dart';
@@ -9,13 +8,9 @@ Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   setWindowTitle('Serial Testing');
   setWindowMinSize(Size(Get.width * 0.5, Get.height * 0.8));
-  setWindowMaxSize(Size.infinite);
+  // setWindowMaxSize(Size());
 
   await Get.putAsync(() async => SerialServices().init());
-
-  await GetStorage.init();
-
-  await GetStorage().write('is_debug_enabled', false);
 }
 
 extension StringCasingExtension on String {

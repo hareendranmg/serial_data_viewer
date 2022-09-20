@@ -14,7 +14,29 @@ class SettingsView extends GetView<SettingsController> {
       body: Row(
         children: [
           SideBar(menu: Menus.settings),
-          const SettingsBody(),
+          FutureBuilder<bool>(
+            future: controller.isDataLoaded,
+            initialData: false,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  return const Center(child: CircularProgressIndicator());
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error occured. Please restart the app'),
+                    );
+                  } else {
+                    return const SettingsBody();
+                  }
+
+                default:
+                  return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ],
       ),
     );

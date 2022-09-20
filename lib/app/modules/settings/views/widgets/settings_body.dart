@@ -87,7 +87,7 @@ class SettingsBody extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required()],
                           ),
-                          initialValue: _.box.read('baudrate') ?? 9600,
+                          initialValue: _.box.getInt('baudrate') ?? 9600,
                         ),
                       ),
                     ],
@@ -113,7 +113,7 @@ class SettingsBody extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required()],
                           ),
-                          initialValue: _.box.read('databits') ?? 8,
+                          initialValue: _.box.getInt('databits') ?? 8,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -135,7 +135,7 @@ class SettingsBody extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required()],
                           ),
-                          initialValue: _.box.read('stopbits') ?? 1,
+                          initialValue: _.box.getInt('stopbits') ?? 1,
                         ),
                       ),
                     ],
@@ -161,31 +161,31 @@ class SettingsBody extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required()],
                           ),
-                          initialValue: _.box.read('parity') ?? 0,
+                          initialValue: _.box.getInt('parity') ?? 0,
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: FormBuilderDropdown<int>(
-                          name: 'flowcontrol',
-                          items: flowControl
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e['value']! as int,
-                                  child: Text(e['name']! as String),
-                                ),
-                              )
-                              .toList(),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Flow control',
-                          ),
-                          validator: FormBuilderValidators.compose(
-                            [FormBuilderValidators.required()],
-                          ),
-                          initialValue: _.box.read('flowcontrol') ?? 0,
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: FormBuilderDropdown<int>(
+                      //     name: 'flowcontrol',
+                      //     items: flowControl
+                      //         .map(
+                      //           (e) => DropdownMenuItem(
+                      //             value: e['value']! as int,
+                      //             child: Text(e['name']! as String),
+                      //           ),
+                      //         )
+                      //         .toList(),
+                      //     decoration: const InputDecoration(
+                      //       border: OutlineInputBorder(),
+                      //       labelText: 'Flow control',
+                      //     ),
+                      //     validator: FormBuilderValidators.compose(
+                      //       [FormBuilderValidators.required()],
+                      //     ),
+                      //     initialValue: _.box.getInt('flowcontrol') ?? 0,
+                      //   ),
+                      // ),
                     ],
                   ),
                   HEIGHT_12,
@@ -204,8 +204,10 @@ class SettingsBody extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: _.saveSettings,
-                          child: const Text('Save'),
+                          onPressed: _.inAsyncCall ? null : _.saveSettings,
+                          child: _.inAsyncCall
+                              ? const LoadingCircularIndicator()
+                              : const Text('Save'),
                         ),
                       ),
                     ],

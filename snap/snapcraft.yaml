@@ -1,0 +1,18 @@
+name: serial-test
+version: 0.1.0
+summary: Serial Test
+description: Serial Testing!
+
+confinement: strict
+base: core18
+grade: stable
+
+apps:
+  serial-test:
+    command: serial_test
+    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
+parts:
+  serial-test:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application
