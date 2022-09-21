@@ -21,12 +21,9 @@ class ConnectionSettings extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 48, left: 6),
-          child: Text(
-            'Connection Settings',
-            style: TextStyle(fontSize: 16),
-          ),
+        const Text(
+          'Connection Settings',
+          style: TextStyle(fontSize: 16),
         ),
         HEIGHT_12,
         Card(

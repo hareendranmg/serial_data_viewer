@@ -7,9 +7,10 @@ import '../../../services/serial_services.dart';
 
 class HomeBaseController extends GetxController {
   late final SharedPreferences box;
-  final formKey = GlobalKey<FormBuilderState>();
+  final customDataFormKey = GlobalKey<FormBuilderState>();
   late final ScrollController scrollController;
   final serialServices = Get.find<SerialServices>();
+  late final Future<bool> isDataLoaded;
 
   String _error = '';
   String _response = '';

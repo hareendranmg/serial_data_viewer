@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'home_base_controller.dart';
@@ -11,14 +12,24 @@ import 'home_base_controller.dart';
 class HomeController extends HomeBaseController {
   @override
   void onInit() {
-    scrollController = ScrollController();
+    isDataLoaded = loadData();
     super.onInit();
+  }
+
+  Future<bool> loadData() async {
+    try {
+      box = await SharedPreferences.getInstance();
+      scrollController = ScrollController();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> sendData() async {
     try {
-      if (formKey.currentState?.saveAndValidate() ?? false) {
-        final data = formKey.currentState?.value['data'] as String;
+      if (customDataFormKey.currentState?.saveAndValidate() ?? false) {
+        final data = customDataFormKey.currentState?.value['data'] as String;
         if (serialServices.port?.isOpen ?? false) {
           serialServices.port?.flush();
           serialServices.write(data);
@@ -27,7 +38,8 @@ class HomeController extends HomeBaseController {
             final bytes = serialServices.port!
                 .read(serialServices.port!.bytesAvailable, timeout: 0);
             response = String.fromCharCodes(bytes);
-            formKey.currentState?.fields['response']?.didChange(response);
+            customDataFormKey.currentState?.fields['response']
+                ?.didChange(response);
           });
         } else {
           Get.dialog(

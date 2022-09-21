@@ -16,7 +16,7 @@ class SettingsBody extends StatelessWidget {
     return Expanded(
       flex: 6,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.only(top: 42, left: 24, right: 28),
         child: GetBuilder<SettingsController>(
           builder: (_) {
             return ListView(
