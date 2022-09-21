@@ -6,16 +6,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsBaseController extends GetxController {
   late final SharedPreferences box;
-  final formKey = GlobalKey<FormBuilderState>();
+  final connectionFormKey = GlobalKey<FormBuilderState>();
+  final generatorFormKey = GlobalKey<FormBuilderState>();
   late final ScrollController scrollController;
   late final Future<bool> isDataLoaded;
 
   List<SerialPort> _activePorts = [];
-  bool _inAsyncCall = false;
+  bool _isConnectionSaving = false;
 
   //******************** GETTERS AND SETTERS *********************/
   List<SerialPort> get activePorts => _activePorts;
   set activePorts(List<SerialPort> v) => {_activePorts = v, update()};
-  bool get inAsyncCall => _inAsyncCall;
-  set inAsyncCall(bool v) => {_inAsyncCall = v, update()};
+  bool get isConnectionSaving => _isConnectionSaving;
+  set isConnectionSaving(bool v) => {_isConnectionSaving = v, update()};
 }

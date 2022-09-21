@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/global_widgets.dart';
 import '../../controllers/settings_controller.dart';
 import 'connection_settings.dart';
+import 'generator_settings.dart';
 
 class SettingsBody extends StatelessWidget {
   const SettingsBody({
@@ -17,43 +17,41 @@ class SettingsBody extends StatelessWidget {
       flex: 6,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: FormBuilder(
-          key: Get.find<SettingsController>().formKey,
-          child: GetBuilder<SettingsController>(
-            builder: (_) {
-              return ListView(
-                children: [
-                  ConnectionSettings(controller: _),
-                  HEIGHT_12,
-                  HEIGHT_12,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            _.formKey.currentState?.reset();
-                            _.refreshPorts();
-                          },
-                          child: const Text('Reset'),
-                        ),
+        child: GetBuilder<SettingsController>(
+          builder: (_) {
+            return ListView(
+              children: [
+                ConnectionSettings(controller: _),
+                GeneratorSettings(controller: _),
+                HEIGHT_12,
+                HEIGHT_12,
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          _.connectionFormKey.currentState?.reset();
+                          _.refreshPorts();
+                        },
+                        child: const Text('Reset'),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _.inAsyncCall ? null : _.saveSettings,
-                          child: _.inAsyncCall
-                              ? const LoadingCircularIndicator()
-                              : const Text('Save'),
-                        ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _.isConnectionSaving ? null : _.saveSettings,
+                        child: _.isConnectionSaving
+                            ? const LoadingCircularIndicator()
+                            : const Text('Save'),
                       ),
-                    ],
-                  ),
-                  HEIGHT_12,
-                  HEIGHT_12,
-                ],
-              );
-            },
-          ),
+                    ),
+                  ],
+                ),
+                HEIGHT_12,
+                HEIGHT_12,
+              ],
+            );
+          },
         ),
       ),
     );

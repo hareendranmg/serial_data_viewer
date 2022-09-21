@@ -33,9 +33,9 @@ class SettingsController extends SettingsBaseController {
 
   Future<void> saveSettings() async {
     try {
-      if (formKey.currentState?.saveAndValidate() ?? false) {
-        inAsyncCall = true;
-        final data = formKey.currentState?.value;
+      if (connectionFormKey.currentState?.saveAndValidate() ?? false) {
+        isConnectionSaving = true;
+        final data = connectionFormKey.currentState?.value;
         await box.setInt('baudrate', data?['baudrate'] as int);
         await box.setInt('databits', data?['databits'] as int);
         await box.setInt('stopbits', data?['stopbits'] as int);
@@ -100,7 +100,7 @@ class SettingsController extends SettingsBaseController {
       );
       if (kDebugMode) rethrow;
     } finally {
-      inAsyncCall = false;
+      isConnectionSaving = false;
     }
   }
 

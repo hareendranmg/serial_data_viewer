@@ -10,7 +10,7 @@ const textColorGrey = Color(0xFF616161);
 final themeData = ThemeData().copyWith(
   primaryColor: primaryColor,
   // scaffoldBackgroundColor: Colors.white,
-  useMaterial3: true,
+  // useMaterial3: true,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
@@ -23,6 +23,7 @@ final themeData = ThemeData().copyWith(
       foregroundColor: primaryColor,
     ),
   ),
+  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: primaryColor),
   // textTheme: GoogleFonts.nunitoTextTheme(),
 );
 
