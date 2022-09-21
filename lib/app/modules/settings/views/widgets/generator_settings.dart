@@ -89,7 +89,7 @@ class GeneratorSettings extends StatelessWidget {
                                 FormBuilderValidators.max(10000000),
                               ],
                             ),
-                            initialValue: '1000',
+                            initialValue: '100',
                             keyboardType: TextInputType.number,
                             valueTransformer: (value) =>
                                 int.tryParse(value ?? '0'),

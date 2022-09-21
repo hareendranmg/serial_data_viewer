@@ -8,17 +8,34 @@ import '../../../services/serial_services.dart';
 class HomeBaseController extends GetxController {
   late final SharedPreferences box;
   final customDataFormKey = GlobalKey<FormBuilderState>();
+  final generatedDataFormKey = GlobalKey<FormBuilderState>();
+  final responseDetailsFormKey = GlobalKey<FormBuilderState>();
   late final ScrollController scrollController;
   final serialServices = Get.find<SerialServices>();
   late final Future<bool> isDataLoaded;
 
-  String _error = '';
-  String _response = '';
+  late final String pattern;
+  late final int timesToSend;
+
+  bool _isCustomDataSending = false;
+  bool _isGeneratedDataSending = false;
+
+  String customResponse = '';
+  String generatedResponse = '';
+
+  String _customError = '';
+  String _generatedError = '';
 
   //******************** GETTERS AND SETTERS *********************/
-  String get error => _error;
-  set error(String v) => {_error = v, update()};
+  bool get isCustomDataSending => _isCustomDataSending;
+  set isCustomDataSending(bool v) => {_isCustomDataSending = v, update()};
 
-  String get response => _response;
-  set response(String v) => {_response = v, update()};
+  bool get isGeneratedDataSending => _isGeneratedDataSending;
+  set isGeneratedDataSending(bool v) => {_isGeneratedDataSending = v, update()};
+
+  String get customError => _customError;
+  set customError(String v) => {_customError = v, update()};
+
+  String get generatedError => _generatedError;
+  set generatedError(String v) => {_generatedError = v, update()};
 }

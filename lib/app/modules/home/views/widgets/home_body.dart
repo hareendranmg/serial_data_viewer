@@ -5,6 +5,7 @@ import '../../../../utils/global_widgets.dart';
 import '../../controllers/home_controller.dart';
 import 'device_card.dart';
 import 'send_custom_data_card.dart';
+import 'send_generated_data_card.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({
@@ -25,6 +26,7 @@ class HomeBody extends StatelessWidget {
                 children: [
                   DeviceCard(controller: _),
                   SendCustomDataCard(controller: _),
+                  SendGenratedDataCard(controller: _),
                   HEIGHT_12,
                   HEIGHT_12,
                 ],

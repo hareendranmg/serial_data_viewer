@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../../../../utils/global_widgets.dart';
 import '../../../../utils/theme_data.dart';
 import '../../controllers/home_controller.dart';
 
-class SendCustomDataCard extends StatelessWidget {
-  const SendCustomDataCard({super.key, required this.controller});
+class SendGenratedDataCard extends StatelessWidget {
+  const SendGenratedDataCard({super.key, required this.controller});
 
   final HomeController controller;
 
@@ -20,7 +19,7 @@ class SendCustomDataCard extends StatelessWidget {
         Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            title: const Text('Send custom data to serial port'),
+            title: const Text('Send genereated data to serial port'),
             textColor: primaryColor,
             iconColor: primaryColor,
             tilePadding: const EdgeInsets.all(4),
@@ -31,45 +30,41 @@ class SendCustomDataCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: FormBuilder(
-                    key: controller.customDataFormKey,
+                    key: controller.generatedDataFormKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FormBuilderTextField(
-                          name: 'custom_data',
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
-                          maxLines: 5,
-                          validator: FormBuilderValidators.compose(
-                            [FormBuilderValidators.required()],
-                          ),
-                        ),
-                        HEIGHT_12,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            OutlinedButton.icon(
-                              onPressed: () {
-                                controller.customDataFormKey.currentState
-                                    ?.reset();
-                              },
-                              icon: const Icon(Icons.refresh),
-                              label: const Text('Reset'),
+                            Expanded(
+                              child: Text(
+                                'Send ${controller.pattern} string ${controller.timesToSend} times',
+                              ),
                             ),
-                            const SizedBox(width: 12),
                             ElevatedButton.icon(
-                              onPressed: controller.sendCustomData,
+                              onPressed: controller.isGeneratedDataSending
+                                  ? null
+                                  : controller.sendGeneratedData,
                               icon: const Icon(Icons.send),
-                              label: const Text('Send'),
+                              label: controller.isGeneratedDataSending
+                                  ? const LoadingCircularIndicator()
+                                  : const Text('Send'),
                             ),
                           ],
                         ),
                         HEIGHT_12,
                         HEIGHT_12,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Response'),
+                            const Expanded(child: Text('Response')),
+                            OutlinedButton.icon(
+                              label: const Text('Details'),
+                              icon: const Icon(Icons.info_outline),
+                              onPressed: () =>
+                                  controller.showGeneratedResponseDetails,
+                            ),
+                            WIDTH_12,
                             OutlinedButton.icon(
                               onPressed: controller.saveCustomResponseToFile,
                               icon: const Icon(Icons.save),
@@ -79,7 +74,7 @@ class SendCustomDataCard extends StatelessWidget {
                         ),
                         HEIGHT_12,
                         FormBuilderTextField(
-                          name: 'custom_response',
+                          name: 'generated_response',
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                           ),
