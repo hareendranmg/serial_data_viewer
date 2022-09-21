@@ -25,28 +25,6 @@ class SettingsBody extends StatelessWidget {
                 GeneratorSettings(controller: _),
                 HEIGHT_12,
                 HEIGHT_12,
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          _.connectionFormKey.currentState?.reset();
-                          _.refreshPorts();
-                        },
-                        child: const Text('Reset'),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _.isConnectionSaving ? null : _.saveSettings,
-                        child: _.isConnectionSaving
-                            ? const LoadingCircularIndicator()
-                            : const Text('Save'),
-                      ),
-                    ),
-                  ],
-                ),
                 HEIGHT_12,
                 HEIGHT_12,
               ],

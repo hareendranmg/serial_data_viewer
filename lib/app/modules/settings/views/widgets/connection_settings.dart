@@ -238,7 +238,7 @@ class ConnectionSettings extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: controller.isConnectionSaving
                             ? null
-                            : controller.saveSettings,
+                            : controller.openPort,
                         child: controller.isConnectionSaving
                             ? const LoadingCircularIndicator()
                             : const Text('Open Port'),

@@ -31,7 +31,7 @@ class SettingsController extends SettingsBaseController {
     activePorts = await Get.find<SerialServices>().getPorts();
   }
 
-  Future<void> saveSettings() async {
+  Future<void> openPort() async {
     try {
       if (connectionFormKey.currentState?.saveAndValidate() ?? false) {
         isConnectionSaving = true;
@@ -101,6 +101,48 @@ class SettingsController extends SettingsBaseController {
       if (kDebugMode) rethrow;
     } finally {
       isConnectionSaving = false;
+    }
+  }
+
+  Future<void> saveGeneratorSettings() async {
+    try {
+      if (generatorFormKey.currentState?.saveAndValidate() ?? false) {
+        isGeneratorSaving = true;
+        final data = generatorFormKey.currentState?.value;
+        await box.setString('pattern', data?['pattern'] as String);
+        await box.setInt('times_to_send', data?['times_to_send'] as int);
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Settings saved'),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+            'Could not save settings. Please try again',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      if (kDebugMode) rethrow;
+    } finally {
+      isGeneratorSaving = false;
     }
   }
 

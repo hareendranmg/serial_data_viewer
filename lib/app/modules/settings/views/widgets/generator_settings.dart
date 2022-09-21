@@ -98,7 +98,22 @@ class GeneratorSettings extends StatelessWidget {
                       ),
                     ],
                   ),
-                  HEIGHT_06,
+                  HEIGHT_12,
+                  HEIGHT_12,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: Get.width * 0.1,
+                      child: ElevatedButton(
+                        onPressed: controller.isGeneratorSaving
+                            ? null
+                            : controller.saveGeneratorSettings,
+                        child: controller.isGeneratorSaving
+                            ? const LoadingCircularIndicator()
+                            : const Text('Save Settings'),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

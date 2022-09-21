@@ -13,10 +13,13 @@ class SettingsBaseController extends GetxController {
 
   List<SerialPort> _activePorts = [];
   bool _isConnectionSaving = false;
+  bool _isGeneratorSaving = false;
 
   //******************** GETTERS AND SETTERS *********************/
   List<SerialPort> get activePorts => _activePorts;
   set activePorts(List<SerialPort> v) => {_activePorts = v, update()};
   bool get isConnectionSaving => _isConnectionSaving;
   set isConnectionSaving(bool v) => {_isConnectionSaving = v, update()};
+  bool get isGeneratorSaving => _isGeneratorSaving;
+  set isGeneratorSaving(bool v) => {_isGeneratorSaving = v, update()};
 }
