@@ -25,7 +25,9 @@ class HomeBody extends StatelessWidget {
               child: ListView(
                 children: [
                   DeviceCard(controller: _),
+                  HEIGHT_12,
                   SendCustomDataCard(controller: _),
+                  HEIGHT_12,
                   SendGenratedDataCard(controller: _),
                   HEIGHT_12,
                   HEIGHT_12,

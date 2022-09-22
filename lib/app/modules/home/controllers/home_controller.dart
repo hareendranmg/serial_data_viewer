@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../services/serial_services.dart';
 import '../views/widgets/response_details.dart';
 import 'home_base_controller.dart';
 
@@ -28,55 +29,100 @@ class HomeController extends HomeBaseController {
 
       scrollController = ScrollController();
 
+      refreshPorts();
+
       return true;
     } catch (e) {
       return false;
     }
   }
 
+  Future<void> refreshPorts() async {
+    activePorts = await SerialServices.getPorts();
+  }
+
+  Future<void> connectPort() async {
+    try {
+      if (connectionFormKey.currentState?.saveAndValidate() ?? false) {
+        isConnectionSaving = true;
+        final data = connectionFormKey.currentState?.value;
+        await box.setInt('baudrate', data?['baudrate'] as int);
+        await box.setInt('databits', data?['databits'] as int);
+        await box.setInt('stopbits', data?['stopbits'] as int);
+        await box.setInt('parity', data?['parity'] as int);
+        // box.write('flowcontrol', data?['flowcontrol']);
+
+        final portConfig = SerialPortConfig();
+        portConfig.baudRate = data?['baudrate'] as int;
+        portConfig.bits = data?['databits'] as int;
+        portConfig.stopBits = data?['stopbits'] as int;
+        portConfig.parity = data?['parity'] as int;
+        // portConfig.setFlowControl(data?['flowcontrol'] as int);
+        port = await SerialServices.connect(
+          portName: data?['port'] as String,
+          portConfig: portConfig,
+        );
+
+        reader = SerialPortReader(port!);
+        subscription =
+            reader?.stream.listen((event) {}, onDone: () {}, onError: (e) {});
+
+        if (port == null) {
+          Get.dialog(
+            AlertDialog(
+              title: const Text('Error'),
+              content: const Text(
+                'Unable to connect to the port. Please try again.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+            'Could not open port. Please check your settings and reconnect the device',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      if (kDebugMode) rethrow;
+    } finally {
+      isConnectionSaving = false;
+    }
+  }
+
   Future<void> sendCustomData() async {
-    // Timer.periodic(const Duration(milliseconds: 40), (timer) {
-    //   final bytes = serialServices.port!
-    //       .read(serialServices.port!.bytesAvailable, timeout: 0);
-    //   customResponse += String.fromCharCodes(bytes);
-    //   if (serialServices.port!.bytesAvailable == 0) {
-    //     timer.cancel();
-    //     customDataFormKey.currentState?.fields['custom_response']
-    //         ?.didChange(customResponse);
-    //   }
-    // });
     try {
       if (customDataFormKey.currentState?.saveAndValidate() ?? false) {
-        final customData =
+        customData =
             customDataFormKey.currentState?.value['custom_data'] as String;
-        if (serialServices.port?.isOpen ?? false) {
-          generatedDataFormKey.currentState?.fields['generated_response']
-              ?.reset();
-          serialServices.port?.flush();
+        if (port != null && (port?.isOpen ?? false)) {
+          customError = '';
           customResponse = '';
-          final List<int> resposeBytes = [];
+          customDataFormKey.currentState?.fields['custom_response']?.reset();
+          port?.flush();
 
-          serialServices.write(customData);
-          print(serialServices.port?.bytesAvailable ?? 'null');
-          final reader = SerialPortReader(serialServices.port!);
-          await 1.seconds.delay();
+          SerialServices.write(port!, customData);
 
-          print('333333333333');
-          print(reader.port.bytesAvailable);
-          print('333333333333');
-
-          reader.stream.listen((data) {
-            print('object');
-            resposeBytes.addAll(data);
-          }).onError((error) {
-            print(error);
+          subscription?.onData((event) {
+            customResponse += String.fromCharCodes(event);
+            customDataFormKey.currentState?.fields['custom_response']
+                ?.didChange(customResponse);
           });
-
-          reader.close();
-          customResponse += String.fromCharCodes(resposeBytes);
-          // generatedResponseBytes += data.length;
-          generatedDataFormKey.currentState?.fields['generated_response']
-              ?.didChange(customResponse);
         } else {
           Get.dialog(
             AlertDialog(
@@ -93,15 +139,15 @@ class HomeController extends HomeBaseController {
         }
       }
     } catch (e) {
-      generatedError = e.toString();
+      customError = e.toString();
     }
   }
 
   Future<void> sendGeneratedData() async {
     try {
-      if (serialServices.port?.isOpen ?? false) {
+      if (port != null && (port?.isOpen ?? false)) {
         isGeneratedDataSending = true;
-        serialServices.port?.flush();
+        port?.flush();
         String response = '';
         // int generatedDataBytes = 0;
         // final int generatedResponseBytes = 0;
@@ -109,10 +155,10 @@ class HomeController extends HomeBaseController {
         // final elapsed = Stopwatch()..start();
 
         for (int i = 0; i < timesToSend; i++) {
-          serialServices.write(pattern);
+          SerialServices.write(port!, pattern);
           // generatedDataBytes += pattern.length;
         }
-        final reader = SerialPortReader(serialServices.port!);
+        final reader = SerialPortReader(port!);
 
         // await 1.delay();
 
@@ -240,5 +286,59 @@ class HomeController extends HomeBaseController {
     } catch (e) {
       if (kDebugMode) rethrow;
     }
+  }
+
+  void disconnectPort() {
+    try {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Disconnect'),
+          content: const Text('Are you sure you want to disconnect?'),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                try {
+                  if (port?.isOpen ?? false) port?.close();
+
+                  port?.flush();
+                  port?.dispose();
+                  reader?.close();
+                  port = null;
+                  reader = null;
+                  subscription?.cancel();
+                  subscription = null;
+                } catch (e) {
+                  if (kDebugMode) rethrow;
+                } finally {
+                  Get.back();
+                }
+              },
+              child: const Text('Disconnect'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      if (kDebugMode) rethrow;
+    }
+  }
+
+  @override
+  void onClose() {
+    if (port?.isOpen ?? false) port?.close();
+
+    port?.flush();
+    port?.dispose();
+    port = null;
+    reader?.close();
+    reader = null;
+    subscription?.cancel();
+    subscription = null;
+
+    super.onClose();
   }
 }

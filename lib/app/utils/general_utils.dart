@@ -2,22 +2,20 @@ import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
 import 'package:window_size/window_size.dart';
 
-import '../services/serial_services.dart';
-
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   setWindowTitle('Serial Testing');
   setWindowMinSize(Size(Get.width * 0.5, Get.height * 0.8));
   // setWindowMaxSize(Size());
-
-  await Get.putAsync(() async => SerialServices().init());
 }
 
-extension StringCasingExtension on String {
+extension StringExtensions on String {
   String get titleCase => replaceAll(RegExp(' +'), ' ')
       .split(' ')
       .map((str) => str.capitalizeFirst)
       .join(' ');
+
+  String get byteSize => getByteSize(this);
 }
 
 extension DateTimeExtension on DateTime {
@@ -73,3 +71,16 @@ String getGreeting() {
 }
 
 enum Menus { home, settings }
+
+String getByteSize(String value) {
+  final bytes = value.length;
+  if (bytes < 1024) {
+    return '$bytes bytes';
+  } else if (bytes < 1024 * 1024) {
+    return '${(bytes / 1024).toStringAsFixed(2)} KB';
+  } else if (bytes < 1024 * 1024 * 1024) {
+    return '${(bytes / 1024 / 1024).toStringAsFixed(2)} MB';
+  } else {
+    return '${(bytes / 1024 / 1024 / 1024).toStringAsFixed(2)} GB';
+  }
+}

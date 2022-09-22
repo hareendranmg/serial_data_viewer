@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../../utils/global_widgets.dart';
 import '../../controllers/settings_controller.dart';
-import 'connection_settings.dart';
 import 'generator_settings.dart';
 
 class SettingsBody extends StatelessWidget {
@@ -21,7 +20,6 @@ class SettingsBody extends StatelessWidget {
           builder: (_) {
             return ListView(
               children: [
-                ConnectionSettings(controller: _),
                 GeneratorSettings(controller: _),
                 HEIGHT_12,
                 HEIGHT_12,

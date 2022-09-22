@@ -1,41 +1,66 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../services/serial_services.dart';
-
 class HomeBaseController extends GetxController {
   late final SharedPreferences box;
+
+  final connectionFormKey = GlobalKey<FormBuilderState>();
   final customDataFormKey = GlobalKey<FormBuilderState>();
   final generatedDataFormKey = GlobalKey<FormBuilderState>();
   final responseDetailsFormKey = GlobalKey<FormBuilderState>();
-  late final ScrollController scrollController;
-  final serialServices = Get.find<SerialServices>();
-  late final Future<bool> isDataLoaded;
 
+  SerialPort? _port;
+  SerialPortReader? reader;
+  // ignore: cancel_subscriptions
+  StreamSubscription<Uint8List>? subscription;
+
+  late final ScrollController scrollController;
+  late final Future<bool> isDataLoaded;
   late final String pattern;
   late final int timesToSend;
+
+  List<SerialPort> _activePorts = [];
+
+  bool _isConnectionSaving = false;
 
   bool _isCustomDataSending = false;
   bool _isGeneratedDataSending = false;
 
-  String customResponse = '';
+  String _customData = '';
+  String _customResponse = '';
+  String _customError = '';
+
   String generatedResponse = '';
 
-  String _customError = '';
   String _generatedError = '';
 
   //******************** GETTERS AND SETTERS *********************/
+  SerialPort? get port => _port;
+  set port(SerialPort? v) => {_port = v, update()};
+
+  List<SerialPort> get activePorts => _activePorts;
+  set activePorts(List<SerialPort> v) => {_activePorts = v, update()};
+  bool get isConnectionSaving => _isConnectionSaving;
+  set isConnectionSaving(bool v) => {_isConnectionSaving = v, update()};
+
   bool get isCustomDataSending => _isCustomDataSending;
   set isCustomDataSending(bool v) => {_isCustomDataSending = v, update()};
 
   bool get isGeneratedDataSending => _isGeneratedDataSending;
   set isGeneratedDataSending(bool v) => {_isGeneratedDataSending = v, update()};
+  String get customData => _customData;
+  set customData(String v) => {_customData = v, update()};
+  String get customResponse => _customResponse;
+  set customResponse(String v) => {_customResponse = v, update()};
 
   String get customError => _customError;
   set customError(String v) => {_customError = v, update()};
-
   String get generatedError => _generatedError;
   set generatedError(String v) => {_generatedError = v, update()};
 }
