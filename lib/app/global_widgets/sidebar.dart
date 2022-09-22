@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../modules/home/controllers/home_controller.dart';
 import '../routes/app_pages.dart';
 import '../utils/general_utils.dart';
 import '../utils/global_widgets.dart';
@@ -114,7 +115,14 @@ class SidebarMenuItem extends StatelessWidget {
         selected: selectedMenu == menu,
         selectedTileColor: Colors.indigo.shade100,
         selectedColor: primaryColor,
-        onTap: () => Get.offNamed(route),
+        onTap: () async {
+          if (Get.currentRoute == Routes.HOME) {
+            if (Get.find<HomeController>().port != null) {
+              Get.find<HomeController>().disconnectPort();
+            }
+          }
+          Get.offNamed(route);
+        },
       ),
     );
   }

@@ -12,92 +12,90 @@ class SendGenratedDataCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        HEIGHT_12,
-        Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            title: const Text('Send genereated data to serial port'),
-            textColor: primaryColor,
-            iconColor: primaryColor,
-            tilePadding: const EdgeInsets.all(4),
-            children: [
-              Card(
-                elevation: 4,
-                surfaceTintColor: Colors.grey.shade300,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: FormBuilder(
-                    key: controller.generatedDataFormKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Send ${controller.pattern} string ${controller.timesToSend} times',
-                              ),
+    return Card(
+      elevation: 4,
+      surfaceTintColor: Colors.grey.shade300,
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          title: const Text('Send genereated data to serial port'),
+          textColor: primaryColor,
+          iconColor: primaryColor,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          children: [
+            Card(
+              elevation: 4,
+              surfaceTintColor: Colors.grey.shade300,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: FormBuilder(
+                  key: controller.generatedDataFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Send ${controller.pattern} string ${controller.timesToSend} times',
                             ),
-                            ElevatedButton.icon(
-                              onPressed: controller.isGeneratedDataSending
-                                  ? null
-                                  : controller.sendGeneratedData,
-                              icon: const Icon(Icons.send),
-                              label: controller.isGeneratedDataSending
-                                  ? const LoadingCircularIndicator()
-                                  : const Text('Send'),
-                            ),
-                          ],
-                        ),
-                        HEIGHT_12,
-                        HEIGHT_12,
-                        Row(
-                          children: [
-                            const Expanded(child: Text('Response')),
-                            OutlinedButton.icon(
-                              label: const Text('Details'),
-                              icon: const Icon(Icons.info_outline),
-                              onPressed: () =>
-                                  controller.showGeneratedResponseDetails,
-                            ),
-                            WIDTH_12,
-                            OutlinedButton.icon(
-                              onPressed: controller.saveCustomResponseToFile,
-                              icon: const Icon(Icons.save),
-                              label: const Text('Save to file'),
-                            ),
-                          ],
-                        ),
-                        HEIGHT_12,
-                        FormBuilderTextField(
-                          name: 'generated_response',
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
                           ),
-                          maxLines: 10,
-                          readOnly: true,
-                        ),
-                        HEIGHT_12,
-                        if (controller.generatedError.isNotEmpty) ...[
-                          const Text('Error'),
-                          Text(
-                            controller.generatedError,
-                            style: const TextStyle(color: Colors.red),
+                          ElevatedButton.icon(
+                            onPressed: controller.isGeneratedDataSending
+                                ? null
+                                : controller.sendGeneratedData,
+                            icon: const Icon(Icons.send),
+                            label: controller.isGeneratedDataSending
+                                ? const LoadingCircularIndicator()
+                                : const Text('Send'),
                           ),
                         ],
+                      ),
+                      HEIGHT_12,
+                      HEIGHT_12,
+                      Row(
+                        children: [
+                          const Expanded(child: Text('Response')),
+                          OutlinedButton.icon(
+                            label: const Text('Details'),
+                            icon: const Icon(Icons.info_outline),
+                            onPressed: () =>
+                                controller.showGeneratedResponseDetails,
+                          ),
+                          WIDTH_12,
+                          OutlinedButton.icon(
+                            onPressed: controller.saveCustomResponseToFile,
+                            icon: const Icon(Icons.save),
+                            label: const Text('Save to file'),
+                          ),
+                        ],
+                      ),
+                      HEIGHT_12,
+                      FormBuilderTextField(
+                        name: 'generated_response',
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        maxLines: 10,
+                        readOnly: true,
+                      ),
+                      HEIGHT_12,
+                      if (controller.generatedError.isNotEmpty) ...[
+                        const Text('Error'),
+                        Text(
+                          controller.generatedError,
+                          style: const TextStyle(color: Colors.red),
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
-      ],
+      ),
     );
   }
 }

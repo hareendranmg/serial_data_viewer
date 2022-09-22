@@ -288,7 +288,7 @@ class HomeController extends HomeBaseController {
     }
   }
 
-  void disconnectPort() {
+  void disconnectPortDialog() {
     try {
       Get.dialog(
         AlertDialog(
@@ -301,21 +301,8 @@ class HomeController extends HomeBaseController {
             ),
             ElevatedButton(
               onPressed: () {
-                try {
-                  if (port?.isOpen ?? false) port?.close();
-
-                  port?.flush();
-                  port?.dispose();
-                  reader?.close();
-                  port = null;
-                  reader = null;
-                  subscription?.cancel();
-                  subscription = null;
-                } catch (e) {
-                  if (kDebugMode) rethrow;
-                } finally {
-                  Get.back();
-                }
+                disconnectPort();
+                Get.back();
               },
               child: const Text('Disconnect'),
             ),
@@ -327,17 +314,25 @@ class HomeController extends HomeBaseController {
     }
   }
 
+  void disconnectPort() {
+    try {
+      if (port?.isOpen ?? false) port?.close();
+
+      port?.flush();
+      port?.dispose();
+      reader?.close();
+      port = null;
+      reader = null;
+      subscription?.cancel();
+      subscription = null;
+    } catch (e) {
+      if (kDebugMode) rethrow;
+    }
+  }
+
   @override
   void onClose() {
-    if (port?.isOpen ?? false) port?.close();
-
-    port?.flush();
-    port?.dispose();
-    port = null;
-    reader?.close();
-    reader = null;
-    subscription?.cancel();
-    subscription = null;
+    disconnectPort();
 
     super.onClose();
   }

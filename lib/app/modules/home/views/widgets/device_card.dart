@@ -250,7 +250,7 @@ class DeviceCard extends StatelessWidget {
                           onPressed: controller.isConnectionSaving
                               ? null
                               : (controller.port?.isOpen ?? false)
-                                  ? controller.disconnectPort
+                                  ? controller.disconnectPortDialog
                                   : controller.connectPort,
                           child: controller.isConnectionSaving
                               ? const LoadingCircularIndicator()
