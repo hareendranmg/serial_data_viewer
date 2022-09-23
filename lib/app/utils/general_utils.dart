@@ -8,7 +8,6 @@ Future<void> initializeApp() async {
 
   final windowOptions = WindowOptions(
     minimumSize: Size(Get.width * 0.5, Get.height * 0.8),
-    center: true,
     titleBarStyle: TitleBarStyle.normal,
     title: 'Serial Data Acquisition',
   );

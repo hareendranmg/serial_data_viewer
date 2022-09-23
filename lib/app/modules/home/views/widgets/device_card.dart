@@ -71,7 +71,7 @@ class DeviceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade50,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: FormBuilderDropdown(
@@ -108,7 +108,7 @@ class DeviceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade50,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: FormBuilderDropdown<int>(
@@ -142,7 +142,7 @@ class DeviceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade50,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: FormBuilderDropdown<int>(
@@ -175,7 +175,7 @@ class DeviceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade50,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: FormBuilderDropdown<int>(
@@ -208,7 +208,7 @@ class DeviceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade50,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: FormBuilderDropdown<int>(
@@ -272,7 +272,7 @@ class CustomVerticalDivider extends StatelessWidget {
     return Container(
       height: 32,
       width: 1,
-      color: Colors.grey.shade300,
+      color: Colors.grey.shade200,
     );
   }
 }
@@ -341,7 +341,7 @@ class CustomVerticalDivider extends StatelessWidget {
 //                   child: Container(
 //                     padding: const EdgeInsets.all(12),
 //                     decoration: BoxDecoration(
-//                       color: Colors.indigo.shade50,
+//                       color: Colors.grey.shade200,
 //                       borderRadius: BorderRadius.circular(6),
 //                     ),
 //                     child: FormBuilderDropdown(
@@ -378,7 +378,7 @@ class CustomVerticalDivider extends StatelessWidget {
 //                   child: Container(
 //                     padding: const EdgeInsets.all(12),
 //                     decoration: BoxDecoration(
-//                       color: Colors.indigo.shade50,
+//                       color: Colors.grey.shade200,
 //                       borderRadius: BorderRadius.circular(6),
 //                     ),
 //                     child: FormBuilderDropdown<int>(
@@ -411,7 +411,7 @@ class CustomVerticalDivider extends StatelessWidget {
 //                   child: Container(
 //                     padding: const EdgeInsets.all(12),
 //                     decoration: BoxDecoration(
-//                       color: Colors.indigo.shade50,
+//                       color: Colors.grey.shade200,
 //                       borderRadius: BorderRadius.circular(6),
 //                     ),
 //                     child: FormBuilderDropdown<int>(
@@ -444,7 +444,7 @@ class CustomVerticalDivider extends StatelessWidget {
 //                   child: Container(
 //                     padding: const EdgeInsets.all(12),
 //                     decoration: BoxDecoration(
-//                       color: Colors.indigo.shade50,
+//                       color: Colors.grey.shade200,
 //                       borderRadius: BorderRadius.circular(6),
 //                     ),
 //                     child: FormBuilderDropdown<int>(
@@ -477,7 +477,7 @@ class CustomVerticalDivider extends StatelessWidget {
 //                   child: Container(
 //                     padding: const EdgeInsets.all(12),
 //                     decoration: BoxDecoration(
-//                       color: Colors.indigo.shade50,
+//                       color: Colors.grey.shade200,
 //                       borderRadius: BorderRadius.circular(6),
 //                     ),
 //                     child: FormBuilderDropdown<int>(

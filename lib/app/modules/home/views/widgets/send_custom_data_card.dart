@@ -70,11 +70,12 @@ class SendCustomDataCard extends StatelessWidget {
                     Text(
                       'Response (Size: ${controller.customResponse.byteSize})',
                     ),
-                    OutlinedButton.icon(
-                      onPressed: controller.saveCustomResponseToFile,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Save to file'),
-                    ),
+                    if (controller.customResponse.isNotEmpty)
+                      OutlinedButton.icon(
+                        onPressed: controller.saveCustomResponseToFile,
+                        icon: const Icon(Icons.save),
+                        label: const Text('Save to file'),
+                      ),
                   ],
                 ),
                 HEIGHT_12,

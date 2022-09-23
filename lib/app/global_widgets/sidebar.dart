@@ -27,7 +27,7 @@ class SideBar extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(top: 36, left: 20),
             child: Text(
-              'Serial Testing',
+              'Serial Data Acquisition',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,

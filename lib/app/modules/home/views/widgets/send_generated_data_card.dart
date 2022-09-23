@@ -46,22 +46,17 @@ class SendGenratedDataCard extends StatelessWidget {
                 HEIGHT_12,
                 HEIGHT_12,
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Response (Size: ${controller.generatedResponse.byteSize})',
                     ),
-                    const Spacer(),
-                    OutlinedButton.icon(
-                      label: const Text('Details'),
-                      icon: const Icon(Icons.info_outline),
-                      onPressed: () => controller.showGeneratedResponseDetails,
-                    ),
-                    WIDTH_12,
-                    OutlinedButton.icon(
-                      onPressed: controller.saveCustomResponseToFile,
-                      icon: const Icon(Icons.save),
-                      label: const Text('Save to file'),
-                    ),
+                    if (controller.generatedResponse.isNotEmpty)
+                      OutlinedButton.icon(
+                        onPressed: controller.saveCustomResponseToFile,
+                        icon: const Icon(Icons.save),
+                        label: const Text('Save to file'),
+                      ),
                   ],
                 ),
                 HEIGHT_12,
