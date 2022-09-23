@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../services/serial_services.dart';
+import '../../../utils/global_widgets.dart';
 import '../views/widgets/response_details.dart';
 import 'home_base_controller.dart';
 
@@ -57,15 +58,8 @@ class HomeController extends HomeBaseController {
         portConfig.bits = data?['databits'] as int;
         portConfig.stopBits = data?['stopbits'] as int;
         portConfig.parity = data?['parity'] as int;
-        // portConfig.setFlowControl(data?['flowcontrol'] as int);
-        port = await SerialServices.connect(
-          portName: data?['port'] as String,
-          portConfig: portConfig,
-        );
 
-        reader = SerialPortReader(port!);
-        subscription =
-            reader?.stream.listen((event) {}, onDone: () {}, onError: (e) {});
+        port = await openPort(data?['port'] as String, portConfig);
 
         if (port == null) {
           Get.dialog(
@@ -104,6 +98,25 @@ class HomeController extends HomeBaseController {
       if (kDebugMode) rethrow;
     } finally {
       isConnectionSaving = false;
+    }
+  }
+
+  Future<SerialPort?> openPort(String portName, SerialPortConfig config) async {
+    try {
+      port = await SerialServices.connect(
+        portName: portName,
+        portConfig: config,
+      );
+
+      reader = SerialPortReader(port!);
+      subscription =
+          reader?.stream.listen((event) {}, onDone: () {}, onError: (e) {});
+
+      return port;
+    } catch (e) {
+      if (kDebugMode) print(e);
+
+      return null;
     }
   }
 
@@ -152,25 +165,48 @@ class HomeController extends HomeBaseController {
     try {
       if (port != null && (port?.isOpen ?? false)) {
         isGeneratedDataSending = true;
-        final buffer = StringBuffer();
         generatedData = '';
         generatedError = '';
         generatedResponse = '';
         port?.flush();
 
-        for (int i = 0; i < timesToSend; i++) {
-          SerialServices.write(port!, pattern);
-          buffer.write(pattern);
+        final args = {
+          'pattern': pattern,
+          'times_to_send': timesToSend,
+          'port_name': port!.name,
+        };
+
+        await box.setString('port_name', port!.name!);
+
+        disconnectPort();
+
+        final res = await compute(writeLoopData, args);
+
+        if (res == null) {
+          showSnackBar(
+            type: SnackbarType.error,
+            message: 'Failed to write. Please try again',
+          );
+        } else {
+          final portName = box.getString('port_name');
+
+          final portConfig = SerialPortConfig();
+          portConfig.baudRate = box.getInt('baudrate') ?? 9600;
+          portConfig.bits = box.getInt('databits') ?? 8;
+          portConfig.stopBits = box.getInt('stopbits') ?? 1;
+          portConfig.parity = box.getInt('parity') ?? 0;
+          port = await openPort(portName!, portConfig);
+
+          if (port != null) {
+            generatedData = res;
+
+            subscription?.onData((event) {
+              generatedResponse += String.fromCharCodes(event);
+              generatedDataFormKey.currentState?.fields['generated_response']
+                  ?.didChange(generatedResponse);
+            });
+          }
         }
-
-        generatedData = buffer.toString();
-        buffer.clear();
-
-        subscription?.onData((event) {
-          generatedResponse += String.fromCharCodes(event);
-          generatedDataFormKey.currentState?.fields['generated_response']
-              ?.didChange(generatedResponse);
-        });
 
         // responseDetailsFormKey.currentState?.fields['data_bytes']
         //     ?.didChange(generatedDataBytes.toString());
@@ -200,6 +236,8 @@ class HomeController extends HomeBaseController {
         );
       }
     } catch (e) {
+      print(e);
+      if (kDebugMode) rethrow;
       generatedError = e.toString();
     } finally {
       isGeneratedDataSending = false;
@@ -332,4 +370,41 @@ class HomeController extends HomeBaseController {
 
     super.onClose();
   }
+}
+
+Future<String?> writeLoopData(Map<String, dynamic> args) async {
+  // final box = await SharedPreferences.getInstance();
+
+  final timesToSend = args['times_to_send'] as int;
+  final pattern = args['pattern'] as String;
+
+  late final String generatedData;
+  final buffer = StringBuffer();
+
+  final portConfig = SerialPortConfig();
+  // portConfig.baudRate = box.getInt('baudrate') ?? 9600;
+  portConfig.baudRate = 9600;
+  // portConfig.bits = box.getInt('databits') ?? 8;
+  portConfig.bits = 8;
+  // portConfig.stopBits = box.getInt('stopbits') ?? 1;
+  portConfig.stopBits = 1;
+  // portConfig.parity = box.getInt('parity') ?? 0;
+  portConfig.parity = 0;
+
+  final port = await SerialServices.connect(
+    portName: args['port_name'] as String,
+    portConfig: portConfig,
+  );
+
+  if (port == null) return null;
+
+  for (int i = 0; i < timesToSend; i++) {
+    SerialServices.write(port, pattern);
+    buffer.write(pattern);
+  }
+
+  generatedData = buffer.toString();
+  buffer.clear();
+
+  return generatedData;
 }

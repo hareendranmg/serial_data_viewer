@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+
   await windowManager.ensureInitialized();
 
   final windowOptions = WindowOptions(
