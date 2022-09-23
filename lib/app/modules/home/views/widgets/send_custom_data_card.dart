@@ -58,9 +58,13 @@ class SendCustomDataCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         ElevatedButton.icon(
-                          onPressed: controller.sendCustomData,
+                          onPressed: controller.isCustomDataSending
+                              ? null
+                              : controller.sendCustomData,
                           icon: const Icon(Icons.send),
-                          label: const Text('Send'),
+                          label: controller.isCustomDataSending
+                              ? const LoadingCircularIndicator()
+                              : const Text('Send'),
                         ),
                       ],
                     ),

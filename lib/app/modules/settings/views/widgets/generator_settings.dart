@@ -58,7 +58,7 @@ class GeneratorSettings extends StatelessWidget {
                                 FormBuilderValidators.maxLength(30),
                               ],
                             ),
-                            initialValue: '0123456789',
+                            initialValue: controller.box.getString('pattern'),
                           ),
                         ),
                       ),
@@ -89,7 +89,9 @@ class GeneratorSettings extends StatelessWidget {
                                 FormBuilderValidators.max(10000000),
                               ],
                             ),
-                            initialValue: '100',
+                            initialValue: controller.box
+                                .getInt('times_to_send')
+                                .toString(),
                             keyboardType: TextInputType.number,
                             valueTransformer: (value) =>
                                 int.tryParse(value ?? '0'),

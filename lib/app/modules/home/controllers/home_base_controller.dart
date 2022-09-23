@@ -36,31 +36,31 @@ class HomeBaseController extends GetxController {
   String _customResponse = '';
   String _customError = '';
 
-  String generatedResponse = '';
-
+  String _generatedData = '';
+  String _generatedResponse = '';
   String _generatedError = '';
 
   //******************** GETTERS AND SETTERS *********************/
   SerialPort? get port => _port;
   set port(SerialPort? v) => {_port = v, update()};
-
   List<SerialPort> get activePorts => _activePorts;
   set activePorts(List<SerialPort> v) => {_activePorts = v, update()};
   bool get isConnectionSaving => _isConnectionSaving;
   set isConnectionSaving(bool v) => {_isConnectionSaving = v, update()};
-
   bool get isCustomDataSending => _isCustomDataSending;
   set isCustomDataSending(bool v) => {_isCustomDataSending = v, update()};
-
   bool get isGeneratedDataSending => _isGeneratedDataSending;
   set isGeneratedDataSending(bool v) => {_isGeneratedDataSending = v, update()};
   String get customData => _customData;
   set customData(String v) => {_customData = v, update()};
   String get customResponse => _customResponse;
   set customResponse(String v) => {_customResponse = v, update()};
-
   String get customError => _customError;
   set customError(String v) => {_customError = v, update()};
   String get generatedError => _generatedError;
   set generatedError(String v) => {_generatedError = v, update()};
+  String get generatedResponse => _generatedResponse;
+  set generatedResponse(String v) => {_generatedResponse = v, update()};
+  String get generatedData => _generatedData;
+  set generatedData(String v) => {_generatedData = v, update()};
 }

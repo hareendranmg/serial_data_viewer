@@ -111,6 +111,7 @@ class HomeController extends HomeBaseController {
         customData =
             customDataFormKey.currentState?.value['custom_data'] as String;
         if (port != null && (port?.isOpen ?? false)) {
+          isCustomDataSending = true;
           customError = '';
           customResponse = '';
           customDataFormKey.currentState?.fields['custom_response']?.reset();
@@ -140,6 +141,8 @@ class HomeController extends HomeBaseController {
       }
     } catch (e) {
       customError = e.toString();
+    } finally {
+      isCustomDataSending = false;
     }
   }
 
@@ -147,34 +150,25 @@ class HomeController extends HomeBaseController {
     try {
       if (port != null && (port?.isOpen ?? false)) {
         isGeneratedDataSending = true;
+        final buffer = StringBuffer();
+        generatedData = '';
+        generatedError = '';
+        generatedResponse = '';
         port?.flush();
-        String response = '';
-        // int generatedDataBytes = 0;
-        // final int generatedResponseBytes = 0;
-
-        // final elapsed = Stopwatch()..start();
 
         for (int i = 0; i < timesToSend; i++) {
           SerialServices.write(port!, pattern);
-          // generatedDataBytes += pattern.length;
+          buffer.write(pattern);
         }
-        final reader = SerialPortReader(port!);
 
-        // await 1.delay();
+        generatedData = buffer.toString();
+        buffer.clear();
 
-        reader.stream.listen((data) {
-          response += String.fromCharCodes(data);
-          // generatedResponseBytes += data.length;
+        subscription?.onData((event) {
+          generatedResponse += String.fromCharCodes(event);
           generatedDataFormKey.currentState?.fields['generated_response']
-              ?.didChange(response);
+              ?.didChange(generatedResponse);
         });
-        reader.close();
-
-        // elapsed.stop();
-
-        // final elapsedSeconds = elapsed.elapsedMilliseconds / 1000;
-        // final dataRate = generatedDataBytes / elapsedSeconds;
-        // final responseRate = generatedResponseBytes / elapsedSeconds;
 
         // responseDetailsFormKey.currentState?.fields['data_bytes']
         //     ?.didChange(generatedDataBytes.toString());
