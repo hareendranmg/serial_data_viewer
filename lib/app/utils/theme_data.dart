@@ -9,7 +9,8 @@ const textColorGrey = Color(0xFF616161);
 
 final themeData = ThemeData().copyWith(
   primaryColor: primaryColor,
-  // scaffoldBackgroundColor: Colors.white,
+  colorScheme: ColorScheme.fromSwatch(accentColor: primaryColor),
+  scaffoldBackgroundColor: Colors.indigo.shade50,
   useMaterial3: true,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -23,8 +24,6 @@ final themeData = ThemeData().copyWith(
       foregroundColor: primaryColor,
     ),
   ),
-  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: primaryColor),
-  // textTheme: GoogleFonts.nunitoTextTheme(),
 );
 
 const screenPadding = EdgeInsets.all(12);

@@ -26,7 +26,9 @@ class HomeBody extends StatelessWidget {
                 children: [
                   DeviceCard(controller: _),
                   HEIGHT_12,
+                  HEIGHT_12,
                   SendCustomDataCard(controller: _),
+                  HEIGHT_12,
                   HEIGHT_12,
                   SendGenratedDataCard(controller: _),
                   HEIGHT_12,
@@ -40,3 +42,32 @@ class HomeBody extends StatelessWidget {
     );
   }
 }
+
+
+              // child: SingleChildScrollView(
+              //   child: ExpansionPanelList(
+              //     expansionCallback: (panelIndex, isExpanded) {
+              //       if (panelIndex == 0) {
+              //         isExpanded
+              //             ? _.selectedCard = HomeCard.none
+              //             : _.selectedCard = HomeCard.device;
+              //       }
+              //       if (panelIndex == 1) {
+              //         isExpanded
+              //             ? _.selectedCard = HomeCard.none
+              //             : _.selectedCard = HomeCard.customData;
+              //       }
+              //       if (panelIndex == 2) {
+              //         isExpanded
+              //             ? _.selectedCard = HomeCard.none
+              //             : _.selectedCard = HomeCard.generatedData;
+              //       }
+              //     },
+              //     children: [
+              //       buildDeviceCard(_),
+              //       buildCustomDataCard(_),
+              //       // SendCustomDataCard(controller: _),
+              //       // SendGenratedDataCard(controller: _),
+              //     ],
+              //   ),
+              // ),

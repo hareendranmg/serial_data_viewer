@@ -13,7 +13,7 @@ class SettingsView extends GetView<SettingsController> {
     return Scaffold(
       body: Row(
         children: [
-          const SideBar(selectedMenu: Menus.settings),
+          SideBar(selectedMenu: Menus.settings),
           FutureBuilder<bool>(
             future: controller.isDataLoaded,
             initialData: false,

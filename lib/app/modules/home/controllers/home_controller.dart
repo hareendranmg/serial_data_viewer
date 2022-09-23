@@ -75,13 +75,15 @@ class HomeController extends HomeBaseController {
                 'Unable to connect to the port. Please try again.',
               ),
               actions: [
-                TextButton(
+                OutlinedButton(
                   onPressed: () => Get.back(),
                   child: const Text('OK'),
                 ),
               ],
             ),
           );
+        } else {
+          deviceCardKey.currentState?.collapse();
         }
       }
     } catch (e) {
@@ -92,7 +94,7 @@ class HomeController extends HomeBaseController {
             'Could not open port. Please check your settings and reconnect the device',
           ),
           actions: [
-            TextButton(
+            OutlinedButton(
               onPressed: () => Get.back(),
               child: const Text('OK'),
             ),
@@ -130,7 +132,7 @@ class HomeController extends HomeBaseController {
               title: const Text('Error'),
               content: const Text('Serial Port is not open'),
               actions: [
-                TextButton(
+                OutlinedButton(
                   onPressed: () => Get.back(),
                   child: const Text('OK'),
                 ),
@@ -189,7 +191,7 @@ class HomeController extends HomeBaseController {
             title: const Text('Error'),
             content: const Text('Serial Port is not open'),
             actions: [
-              TextButton(
+              OutlinedButton(
                 onPressed: () => Get.back(),
                 child: const Text('OK'),
               ),
@@ -221,7 +223,7 @@ class HomeController extends HomeBaseController {
           title: const Text('Success'),
           content: Text('File saved successfully at ${file.path}'),
           actions: [
-            TextButton(
+            OutlinedButton(
               onPressed: () => Get.back(),
               child: const Text('OK'),
             ),
@@ -269,7 +271,7 @@ class HomeController extends HomeBaseController {
             title: const Text('Error'),
             content: const Text('Failed to open file'),
             actions: [
-              TextButton(
+              OutlinedButton(
                 onPressed: () => Get.back(),
                 child: const Text('OK'),
               ),
@@ -289,7 +291,7 @@ class HomeController extends HomeBaseController {
           title: const Text('Disconnect'),
           content: const Text('Are you sure you want to disconnect?'),
           actions: [
-            TextButton(
+            OutlinedButton(
               onPressed: () => Get.back(),
               child: const Text('Cancel'),
             ),

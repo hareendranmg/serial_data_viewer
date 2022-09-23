@@ -1,14 +1,19 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// enum HomeCard { none, device, customData, generatedData }
+
 class HomeBaseController extends GetxController {
   late final SharedPreferences box;
+
+  final deviceCardKey = GlobalKey<ExpansionTileCardState>();
 
   final connectionFormKey = GlobalKey<FormBuilderState>();
   final customDataFormKey = GlobalKey<FormBuilderState>();
@@ -24,6 +29,8 @@ class HomeBaseController extends GetxController {
   late final Future<bool> isDataLoaded;
   late final String pattern;
   late final int timesToSend;
+
+  // HomeCard _selectedCard = HomeCard.device;
 
   List<SerialPort> _activePorts = [];
 
@@ -41,6 +48,8 @@ class HomeBaseController extends GetxController {
   String _generatedError = '';
 
   //******************** GETTERS AND SETTERS *********************/
+  // HomeCard get selectedCard => _selectedCard;
+  // set selectedCard(HomeCard v) => {_selectedCard = v, update()};
   SerialPort? get port => _port;
   set port(SerialPort? v) => {_port = v, update()};
   List<SerialPort> get activePorts => _activePorts;

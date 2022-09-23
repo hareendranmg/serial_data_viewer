@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:window_manager/window_manager.dart';
 
 import '../modules/home/controllers/home_controller.dart';
 import '../routes/app_pages.dart';
@@ -8,97 +7,62 @@ import '../utils/general_utils.dart';
 import '../utils/global_widgets.dart';
 import '../utils/theme_data.dart';
 
-class SideBar extends StatefulWidget {
-  const SideBar({
+class SideBar extends StatelessWidget {
+  SideBar({
     super.key,
     required this.selectedMenu,
   });
 
   final Menus selectedMenu;
 
-  @override
-  State<SideBar> createState() => _SideBarState();
-}
-
-class _SideBarState extends State<SideBar> with WindowListener {
   final scrollController = ScrollController();
-
-  @override
-  void initState() {
-    windowManager.addListener(this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    windowManager.removeListener(this);
-    super.dispose();
-  }
-
-  @override
-  void onWindowResize() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 2,
-      child: Container(
-        height: Get.height * 0.9,
-        decoration: BoxDecoration(
-          color: Colors.indigo.shade50,
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(24),
-            bottomRight: Radius.circular(24),
-          ),
-        ),
-        child: Scrollbar(
-          controller: scrollController,
-          thumbVisibility: true,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 48, left: 20),
-                child: Text(
-                  'Serial Testing',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.indigo,
-                  ),
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 36, left: 20),
+            child: Text(
+              'Serial Testing',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.indigo,
               ),
-              HEIGHT_12,
-              Expanded(
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: ListView(
-                    controller: scrollController,
-                    physics: const ClampingScrollPhysics(),
-                    children: [
-                      SidebarMenuItem(
-                        menu: Menus.home,
-                        selectedMenu: widget.selectedMenu,
-                        icon: Icons.home,
-                        title: 'Home',
-                        route: Routes.HOME,
-                      ),
-                      SidebarMenuItem(
-                        menu: Menus.settings,
-                        selectedMenu: widget.selectedMenu,
-                        icon: Icons.settings,
-                        title: 'Settings',
-                        route: Routes.SETTINGS,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          HEIGHT_12,
+          HEIGHT_12,
+          Expanded(
+            child: Material(
+              type: MaterialType.transparency,
+              child: ListView(
+                controller: scrollController,
+                physics: const ClampingScrollPhysics(),
+                children: [
+                  SidebarMenuItem(
+                    menu: Menus.home,
+                    selectedMenu: selectedMenu,
+                    icon: Icons.home,
+                    title: 'Home',
+                    route: Routes.HOME,
+                  ),
+                  SidebarMenuItem(
+                    menu: Menus.settings,
+                    selectedMenu: selectedMenu,
+                    icon: Icons.settings,
+                    title: 'Settings',
+                    route: Routes.SETTINGS,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -123,7 +87,7 @@ class SidebarMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 14, top: 2, bottom: 2),
+      padding: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
       child: ListTile(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

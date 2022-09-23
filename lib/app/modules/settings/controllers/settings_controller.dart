@@ -45,7 +45,7 @@ class SettingsController extends SettingsBaseController {
             'Could not save settings. Please try again',
           ),
           actions: [
-            TextButton(
+            OutlinedButton(
               onPressed: () => Get.back(),
               child: const Text('OK'),
             ),

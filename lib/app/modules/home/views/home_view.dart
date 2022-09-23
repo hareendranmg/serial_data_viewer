@@ -13,7 +13,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       body: Row(
         children: [
-          const SideBar(selectedMenu: Menus.home),
+          SideBar(selectedMenu: Menus.home),
           FutureBuilder<bool>(
             future: controller.isDataLoaded,
             initialData: false,
