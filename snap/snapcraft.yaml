@@ -9,7 +9,7 @@ grade: stable
 
 apps:
   serial-test:
-    command: serial_test
+    command: serial_data_acquisition
     extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
 parts:
   serial-test:

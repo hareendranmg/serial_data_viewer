@@ -1,4 +1,4 @@
-# serial_test
+# serial_data_acquisition
 
 A new Flutter project.
 

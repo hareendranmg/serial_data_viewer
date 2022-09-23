@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.tachlog" "\0"
-            VALUE "FileDescription", "serial_test" "\0"
+            VALUE "FileDescription", "serial_data_acquisition" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "serial_test" "\0"
+            VALUE "InternalName", "serial_data_acquisition" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.tachlog. All rights reserved." "\0"
-            VALUE "OriginalFilename", "serial_test.exe" "\0"
-            VALUE "ProductName", "serial_test" "\0"
+            VALUE "OriginalFilename", "serial_data_acquisition.exe" "\0"
+            VALUE "ProductName", "serial_data_acquisition" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
