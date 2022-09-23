@@ -102,11 +102,10 @@ class GeneratorSettings extends StatelessWidget {
                   ),
                   HEIGHT_12,
                   HEIGHT_12,
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: Get.width * 0.1,
-                      child: ElevatedButton(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
                         onPressed: controller.isGeneratorSaving
                             ? null
                             : controller.saveGeneratorSettings,
@@ -114,7 +113,7 @@ class GeneratorSettings extends StatelessWidget {
                             ? const LoadingCircularIndicator()
                             : const Text('Save Settings'),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),

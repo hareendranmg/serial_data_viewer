@@ -16,10 +16,11 @@ dependencies:
   rxdart: ^0.27.5
   shared_preferences: ^2.0.15
   url_launcher: ^6.1.5
-  window_size:
-    git:
-      url: https://github.com/google/flutter-desktop-embedding.git
-      path: plugins/window_size
+  window_manager: ^0.2.7
+  # window_size:
+  #   git:
+  #     url: https://github.com/google/flutter-desktop-embedding.git
+  #     path: plugins/window_size
 
 dev_dependencies:
   flutter_launcher_icons: ^0.10.0

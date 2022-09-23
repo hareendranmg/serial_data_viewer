@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/global_widgets.dart';
 import 'settings_base_controller.dart';
 
 class SettingsController extends SettingsBaseController {
@@ -32,18 +33,9 @@ class SettingsController extends SettingsBaseController {
         await box.setString('pattern', data?['pattern'] as String);
         await box.setInt('times_to_send', data?['times_to_send'] as int);
 
-        Get.dialog(
-          AlertDialog(
-            title: const Text('Success'),
-            content: const Text('Settings saved'),
-            actions: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Get.reload();
+
+        showSnackBar(type: SnackbarType.success, message: 'Settings saved');
       }
     } catch (e) {
       Get.dialog(

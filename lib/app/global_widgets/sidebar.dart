@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../modules/home/controllers/home_controller.dart';
 import '../routes/app_pages.dart';
@@ -7,14 +8,37 @@ import '../utils/general_utils.dart';
 import '../utils/global_widgets.dart';
 import '../utils/theme_data.dart';
 
-class SideBar extends StatelessWidget {
-  SideBar({
+class SideBar extends StatefulWidget {
+  const SideBar({
     super.key,
     required this.selectedMenu,
   });
 
-  final scrollController = ScrollController();
   final Menus selectedMenu;
+
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> with WindowListener {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    windowManager.addListener(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowResize() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +80,14 @@ class SideBar extends StatelessWidget {
                     children: [
                       SidebarMenuItem(
                         menu: Menus.home,
-                        selectedMenu: selectedMenu,
+                        selectedMenu: widget.selectedMenu,
                         icon: Icons.home,
                         title: 'Home',
                         route: Routes.HOME,
                       ),
                       SidebarMenuItem(
                         menu: Menus.settings,
-                        selectedMenu: selectedMenu,
+                        selectedMenu: widget.selectedMenu,
                         icon: Icons.settings,
                         title: 'Settings',
                         route: Routes.SETTINGS,

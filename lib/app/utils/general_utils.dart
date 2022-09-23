@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
-import 'package:window_size/window_size.dart';
+import 'package:window_manager/window_manager.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setWindowTitle('Serial Testing');
-  setWindowMinSize(Size(Get.width * 0.5, Get.height * 0.8));
-  // setWindowMaxSize(Size());
+  await windowManager.ensureInitialized();
+
+  final windowOptions = WindowOptions(
+    minimumSize: Size(Get.width * 0.5, Get.height * 0.8),
+    center: true,
+    titleBarStyle: TitleBarStyle.normal,
+    title: 'Serial Data Acquisition',
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 }
 
 extension StringExtensions on String {
