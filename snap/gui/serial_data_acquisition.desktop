@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Serial Data Acquisition
+Comment=Serial Data Acquisition
+Exec=serial-data-acquisition
+Icon=${SNAP}/meta/gui/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;Application;

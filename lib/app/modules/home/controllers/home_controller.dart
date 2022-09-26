@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../services/serial_services.dart';
-import '../../../utils/global_widgets.dart';
 import '../views/widgets/response_details.dart';
 import 'home_base_controller.dart';
 
@@ -114,7 +113,10 @@ class HomeController extends HomeBaseController {
 
       return port;
     } catch (e) {
-      if (kDebugMode) print(e);
+      if (kDebugMode) {
+        print('Error: $e');
+        print(e);
+      }
 
       return null;
     }
@@ -164,49 +166,27 @@ class HomeController extends HomeBaseController {
   Future<void> sendGeneratedData() async {
     try {
       if (port != null && (port?.isOpen ?? false)) {
+        final buffer = StringBuffer();
+
         isGeneratedDataSending = true;
         generatedData = '';
         generatedError = '';
         generatedResponse = '';
         port?.flush();
 
-        final args = {
-          'pattern': pattern,
-          'times_to_send': timesToSend,
-          'port_name': port!.name,
-        };
-
-        await box.setString('port_name', port!.name!);
-
-        disconnectPort();
-
-        final res = await compute(writeLoopData, args);
-
-        if (res == null) {
-          showSnackBar(
-            type: SnackbarType.error,
-            message: 'Failed to write. Please try again',
-          );
-        } else {
-          final portName = box.getString('port_name');
-
-          final portConfig = SerialPortConfig();
-          portConfig.baudRate = box.getInt('baudrate') ?? 9600;
-          portConfig.bits = box.getInt('databits') ?? 8;
-          portConfig.stopBits = box.getInt('stopbits') ?? 1;
-          portConfig.parity = box.getInt('parity') ?? 0;
-          port = await openPort(portName!, portConfig);
-
-          if (port != null) {
-            generatedData = res;
-
-            subscription?.onData((event) {
-              generatedResponse += String.fromCharCodes(event);
-              generatedDataFormKey.currentState?.fields['generated_response']
-                  ?.didChange(generatedResponse);
-            });
-          }
+        for (int i = 0; i < timesToSend; i++) {
+          SerialServices.write(port!, pattern);
+          buffer.write(pattern);
         }
+
+        generatedData = buffer.toString();
+        buffer.clear();
+
+        subscription?.onData((event) {
+          generatedResponse += String.fromCharCodes(event);
+          generatedDataFormKey.currentState?.fields['generated_response']
+              ?.didChange(generatedResponse);
+        });
 
         // responseDetailsFormKey.currentState?.fields['data_bytes']
         //     ?.didChange(generatedDataBytes.toString());
@@ -236,12 +216,19 @@ class HomeController extends HomeBaseController {
         );
       }
     } catch (e) {
-      print(e);
       if (kDebugMode) rethrow;
       generatedError = e.toString();
     } finally {
       isGeneratedDataSending = false;
     }
+  }
+
+  void clearGeneratedResponse() {
+    generatedData = '';
+    generatedResponse = '';
+    generatedError = '';
+    generatedDataFormKey.currentState?.fields['generated_response']
+        ?.didChange(generatedResponse);
   }
 
   void showGeneratedResponseDetails() {
@@ -254,6 +241,29 @@ class HomeController extends HomeBaseController {
 
   Future<void> saveCustomResponseToFile() async {
     final file = await saveResponseToFile(customResponse);
+
+    if (file != null) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success'),
+          content: Text('File saved successfully at ${file.path}'),
+          actions: [
+            OutlinedButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+            ElevatedButton(
+              onPressed: () => openFile(file.path),
+              child: const Text('Open File'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> saveGeneratedResponseToFile() async {
+    final file = await saveResponseToFile(generatedResponse);
 
     if (file != null) {
       Get.dialog(
@@ -370,41 +380,4 @@ class HomeController extends HomeBaseController {
 
     super.onClose();
   }
-}
-
-Future<String?> writeLoopData(Map<String, dynamic> args) async {
-  // final box = await SharedPreferences.getInstance();
-
-  final timesToSend = args['times_to_send'] as int;
-  final pattern = args['pattern'] as String;
-
-  late final String generatedData;
-  final buffer = StringBuffer();
-
-  final portConfig = SerialPortConfig();
-  // portConfig.baudRate = box.getInt('baudrate') ?? 9600;
-  portConfig.baudRate = 9600;
-  // portConfig.bits = box.getInt('databits') ?? 8;
-  portConfig.bits = 8;
-  // portConfig.stopBits = box.getInt('stopbits') ?? 1;
-  portConfig.stopBits = 1;
-  // portConfig.parity = box.getInt('parity') ?? 0;
-  portConfig.parity = 0;
-
-  final port = await SerialServices.connect(
-    portName: args['port_name'] as String,
-    portConfig: portConfig,
-  );
-
-  if (port == null) return null;
-
-  for (int i = 0; i < timesToSend; i++) {
-    SerialServices.write(port, pattern);
-    buffer.write(pattern);
-  }
-
-  generatedData = buffer.toString();
-  buffer.clear();
-
-  return generatedData;
 }
