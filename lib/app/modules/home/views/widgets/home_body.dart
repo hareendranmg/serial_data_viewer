@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../utils/global_widgets.dart';
 import '../../controllers/home_controller.dart';
 import 'device_card.dart';
+import 'receive_data_card.dart';
 import 'send_custom_data_card.dart';
 import 'send_generated_data_card.dart';
 
@@ -31,6 +32,9 @@ class HomeBody extends StatelessWidget {
                   HEIGHT_12,
                   HEIGHT_12,
                   SendGenratedDataCard(controller: _),
+                  HEIGHT_12,
+                  HEIGHT_12,
+                  RecieveDataCard(controller: _),
                   HEIGHT_12,
                   HEIGHT_12,
                 ],

@@ -7,57 +7,41 @@ import '../../../../utils/global_widgets.dart';
 import '../../../../utils/theme_data.dart';
 import '../../controllers/home_controller.dart';
 
-class SendGenratedDataCard extends StatelessWidget {
-  const SendGenratedDataCard({super.key, required this.controller});
+class RecieveDataCard extends StatelessWidget {
+  const RecieveDataCard({super.key, required this.controller});
 
   final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTileCard(
-      title: const Text('Send genereated data to serial port'),
+      title: const Text('Recieved data from serial port'),
       expandedTextColor: primaryColor,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: FormBuilder(
-            key: controller.generatedDataFormKey,
+            key: controller.recievedDataFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Send ${controller.pattern} string ${controller.timesToSend} times',
-                    ),
-                    Text(' (${controller.generatedData.byteSize})'),
-                    const Spacer(),
-                    ElevatedButton.icon(
-                      onPressed: controller.isGeneratedDataSending
-                          ? null
-                          : controller.sendGeneratedData,
-                      icon: const Icon(Icons.send),
-                      label: const Text('Send'),
-                    ),
-                  ],
-                ),
                 HEIGHT_12,
                 HEIGHT_12,
                 Row(
                   children: [
                     Text(
-                      'Response (Size: ${controller.generatedResponse.byteSize})',
+                      'Response (Size: ${controller.receivedResponse.byteSize})',
                     ),
-                    if (controller.generatedResponse.isNotEmpty) ...[
+                    if (controller.receivedResponse.isNotEmpty) ...[
                       const Spacer(),
                       OutlinedButton.icon(
-                        onPressed: controller.clearGeneratedResponse,
+                        onPressed: controller.clearRecievedResponse,
                         icon: const Icon(Icons.refresh_outlined),
                         label: const Text('Clear'),
                       ),
                       WIDTH_12,
                       OutlinedButton.icon(
-                        onPressed: controller.saveGeneratedResponseToFile,
+                        onPressed: controller.saveRecievedResponseToFile,
                         icon: const Icon(Icons.save),
                         label: const Text('Save to file'),
                       ),
@@ -66,7 +50,7 @@ class SendGenratedDataCard extends StatelessWidget {
                 ),
                 HEIGHT_12,
                 FormBuilderTextField(
-                  name: 'generated_response',
+                  name: 'recieved_response',
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
@@ -74,10 +58,10 @@ class SendGenratedDataCard extends StatelessWidget {
                   readOnly: true,
                 ),
                 HEIGHT_12,
-                if (controller.generatedError.isNotEmpty) ...[
+                if (controller.receivedError.isNotEmpty) ...[
                   const Text('Error'),
                   Text(
-                    controller.generatedError,
+                    controller.receivedError,
                     style: const TextStyle(color: Colors.red),
                   ),
                 ],

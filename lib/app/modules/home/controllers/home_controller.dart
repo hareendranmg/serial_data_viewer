@@ -77,6 +77,12 @@ class HomeController extends HomeBaseController {
           );
         } else {
           deviceCardKey.currentState?.collapse();
+
+          subscription?.onData((event) {
+            receivedResponse += String.fromCharCodes(event);
+            recievedDataFormKey.currentState?.fields['recieved_response']
+                ?.didChange(receivedResponse);
+          });
         }
       }
     } catch (e) {
@@ -119,6 +125,36 @@ class HomeController extends HomeBaseController {
       }
 
       return null;
+    }
+  }
+
+  Future<void> clearRecievedResponse() async {
+    receivedResponse = '';
+    receivedError = '';
+    recievedDataFormKey.currentState?.fields['recieved_response']
+        ?.didChange('');
+  }
+
+  Future<void> saveRecievedResponseToFile() async {
+    final file = await saveResponseToFile(receivedResponse);
+
+    if (file != null) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success'),
+          content: Text('File saved successfully at ${file.path}'),
+          actions: [
+            OutlinedButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+            ElevatedButton(
+              onPressed: () => openFile(file.path),
+              child: const Text('Open File'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -167,26 +203,46 @@ class HomeController extends HomeBaseController {
     try {
       if (port != null && (port?.isOpen ?? false)) {
         final buffer = StringBuffer();
+        final watch = Stopwatch();
 
         isGeneratedDataSending = true;
+        await 1.delay();
         generatedData = '';
         generatedError = '';
         generatedResponse = '';
         port?.flush();
 
+        watch.reset();
+        watch.start();
+
         for (int i = 0; i < timesToSend; i++) {
-          SerialServices.write(port!, pattern);
           buffer.write(pattern);
         }
 
         generatedData = buffer.toString();
         buffer.clear();
 
+        watch.stop();
+
+        print('time to generate data: ${watch.elapsed.inMilliseconds} ms');
+
+        watch.reset();
+        watch.start();
+        SerialServices.write(port!, generatedData);
+        watch.stop();
+        print('Time to send data: ${watch.elapsed.inMilliseconds} ms');
+
+        watch.reset();
+        watch.start();
+
         subscription?.onData((event) {
           generatedResponse += String.fromCharCodes(event);
           generatedDataFormKey.currentState?.fields['generated_response']
               ?.didChange(generatedResponse);
         });
+
+        watch.stop();
+        print('Time to receive data: ${watch.elapsed.inSeconds} seconds');
 
         // responseDetailsFormKey.currentState?.fields['data_bytes']
         //     ?.didChange(generatedDataBytes.toString());

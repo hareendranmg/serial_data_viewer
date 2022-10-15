@@ -19,6 +19,7 @@ class HomeBaseController extends GetxController {
   final customDataFormKey = GlobalKey<FormBuilderState>();
   final generatedDataFormKey = GlobalKey<FormBuilderState>();
   final responseDetailsFormKey = GlobalKey<FormBuilderState>();
+  final recievedDataFormKey = GlobalKey<FormBuilderState>();
 
   SerialPort? _port;
   SerialPortReader? reader;
@@ -47,6 +48,9 @@ class HomeBaseController extends GetxController {
   String _generatedResponse = '';
   String _generatedError = '';
 
+  String _receivedResponse = '';
+  String _receivedError = '';
+
   //******************** GETTERS AND SETTERS *********************/
   // HomeCard get selectedCard => _selectedCard;
   // set selectedCard(HomeCard v) => {_selectedCard = v, update()};
@@ -72,4 +76,8 @@ class HomeBaseController extends GetxController {
   set generatedResponse(String v) => {_generatedResponse = v, update()};
   String get generatedData => _generatedData;
   set generatedData(String v) => {_generatedData = v, update()};
+  String get receivedResponse => _receivedResponse;
+  set receivedResponse(String v) => {_receivedResponse = v, update()};
+  String get receivedError => _receivedError;
+  set receivedError(String v) => {_receivedError = v, update()};
 }
