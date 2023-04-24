@@ -20,6 +20,7 @@ class HomeBaseController extends GetxController {
   final generatedDataFormKey = GlobalKey<FormBuilderState>();
   final responseDetailsFormKey = GlobalKey<FormBuilderState>();
   final recievedDataFormKey = GlobalKey<FormBuilderState>();
+  final receivedScrollController = ScrollController();
 
   SerialPort? _port;
   SerialPortReader? reader;

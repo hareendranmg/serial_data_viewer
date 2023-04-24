@@ -29,6 +29,17 @@ class HomeController extends HomeBaseController {
 
       scrollController = ScrollController();
 
+      receivedScrollController.addListener(() {
+        if (receivedScrollController.position.pixels ==
+            receivedScrollController.position.maxScrollExtent) {
+          receivedScrollController.animateTo(
+            receivedScrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+
       refreshPorts();
 
       return true;
@@ -79,7 +90,11 @@ class HomeController extends HomeBaseController {
           deviceCardKey.currentState?.collapse();
 
           subscription?.onData((event) {
-            receivedResponse += String.fromCharCodes(event);
+            final currentTime = DateTime.now();
+            final customCurrentTimeFormat =
+                '${currentTime.hour}:${currentTime.minute}:${currentTime.second}';
+            receivedResponse +=
+                '$customCurrentTimeFormat, ${String.fromCharCodes(event)}';
             recievedDataFormKey.currentState?.fields['recieved_response']
                 ?.didChange(receivedResponse);
           });
@@ -348,7 +363,7 @@ class HomeController extends HomeBaseController {
       final currentTime = DateTime.now();
       final customCurrentTimeFormat =
           '${currentTime.year}${currentTime.month}${currentTime.day}${currentTime.hour}${currentTime.minute}${currentTime.second}';
-      final fileName = 'sda_$customCurrentTimeFormat.txt';
+      final fileName = 'sda_$customCurrentTimeFormat.csv';
 
       final filePath = '${directory.path}${Platform.pathSeparator}$fileName';
 

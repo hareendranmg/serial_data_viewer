@@ -50,6 +50,7 @@ class RecieveDataCard extends StatelessWidget {
                 ),
                 HEIGHT_12,
                 FormBuilderTextField(
+                  scrollController: controller.receivedScrollController,
                   name: 'recieved_response',
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
