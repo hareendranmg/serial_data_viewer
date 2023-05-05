@@ -27,19 +27,6 @@ class HomeController extends HomeBaseController {
       pattern = box.getString('pattern') ?? '0123456789';
       timesToSend = box.getInt('times_to_send') ?? 100;
 
-      scrollController = ScrollController();
-
-      receivedScrollController.addListener(() {
-        if (receivedScrollController.position.pixels ==
-            receivedScrollController.position.maxScrollExtent) {
-          receivedScrollController.animateTo(
-            receivedScrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
-        }
-      });
-
       refreshPorts();
 
       return true;
@@ -88,15 +75,36 @@ class HomeController extends HomeBaseController {
           );
         } else {
           deviceCardKey.currentState?.collapse();
+          bool autoScrollEnabled = true;
 
           subscription?.onData((event) {
             final currentTime = DateTime.now();
             final customCurrentTimeFormat =
                 '${currentTime.hour}:${currentTime.minute}:${currentTime.second}';
             receivedResponse +=
-                '$customCurrentTimeFormat, ${String.fromCharCodes(event)}';
+                '$customCurrentTimeFormat ${String.fromCharCodes(event)}';
             recievedDataFormKey.currentState?.fields['recieved_response']
                 ?.didChange(receivedResponse);
+            if (receivedScrollController.hasClients) {
+              if (autoScrollEnabled) {
+                receivedScrollController.animateTo(
+                  receivedScrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeOut,
+                );
+              }
+            }
+          });
+
+          receivedScrollController.addListener(() {
+            if (receivedScrollController.offset >=
+                receivedScrollController.position.maxScrollExtent - 30) {
+              // User has scrolled to the bottom
+              autoScrollEnabled = true;
+            } else {
+              // User has scrolled up
+              autoScrollEnabled = false;
+            }
           });
         }
       }
@@ -448,6 +456,7 @@ class HomeController extends HomeBaseController {
   @override
   void onClose() {
     disconnectPort();
+    receivedScrollController.dispose();
 
     super.onClose();
   }

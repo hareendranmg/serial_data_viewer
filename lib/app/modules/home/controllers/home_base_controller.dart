@@ -20,14 +20,13 @@ class HomeBaseController extends GetxController {
   final generatedDataFormKey = GlobalKey<FormBuilderState>();
   final responseDetailsFormKey = GlobalKey<FormBuilderState>();
   final recievedDataFormKey = GlobalKey<FormBuilderState>();
-  final receivedScrollController = ScrollController();
 
   SerialPort? _port;
   SerialPortReader? reader;
   // ignore: cancel_subscriptions
   StreamSubscription<Uint8List>? subscription;
 
-  late final ScrollController scrollController;
+  final receivedScrollController = ScrollController();
   late final Future<bool> isDataLoaded;
   late final String pattern;
   late final int timesToSend;
