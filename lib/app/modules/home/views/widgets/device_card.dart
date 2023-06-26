@@ -256,7 +256,7 @@ class DeviceCard extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

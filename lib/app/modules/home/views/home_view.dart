@@ -24,13 +24,11 @@ class HomeView extends GetView<HomeController> {
                 case ConnectionState.active:
                   return const Center(child: CircularProgressIndicator());
                 case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Error occured. Please restart the app'),
-                    );
-                  } else {
-                    return const HomeBody();
-                  }
+                  return snapshot.hasError
+                      ? const Center(
+                          child: Text('Error occured. Please restart the app'),
+                        )
+                      : const HomeBody();
 
                 default:
                   return const Center(child: CircularProgressIndicator());

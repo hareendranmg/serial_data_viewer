@@ -109,7 +109,7 @@ class GeneratorSettings extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

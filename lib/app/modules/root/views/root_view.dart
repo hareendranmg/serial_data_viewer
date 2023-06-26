@@ -18,9 +18,9 @@ class RootView extends GetView<RootController> {
         child: FutureBuilder(
           future: controller.initServices(),
           builder: (context, snapshot) {
-            return Center(
+            return const Center(
               child: Column(
-                children: const [
+                children: [
                   Spacer(),
                   Text(
                     'Serail Testing',

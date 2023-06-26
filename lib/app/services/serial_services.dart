@@ -30,6 +30,7 @@ class SerialServices {
         print('error: $e');
         rethrow;
       }
+
       return null;
     }
   }
@@ -38,11 +39,14 @@ class SerialServices {
     try {
       if (port.isOpen) {
         final bytes = Uint8List.fromList(utf8.encode(data));
+
         return port.write(bytes, timeout: 0);
       }
+
       return 0;
     } catch (e) {
       if (kDebugMode) rethrow;
+
       return 0;
     }
   }
@@ -50,9 +54,11 @@ class SerialServices {
   static Future<List<SerialPort>> getPorts() async {
     try {
       final ports = SerialPort.availablePorts;
+
       return ports.map((e) => SerialPort(e)).toList();
     } catch (e) {
       if (kDebugMode) rethrow;
+
       return [];
     }
   }

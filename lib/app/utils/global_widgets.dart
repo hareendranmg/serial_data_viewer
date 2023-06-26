@@ -97,7 +97,7 @@ void showLsapDialog(String title, String content) {
         ElevatedButton(
           onPressed: () => Get.back(),
           child: const Text('Ok'),
-        )
+        ),
       ],
     ),
   );

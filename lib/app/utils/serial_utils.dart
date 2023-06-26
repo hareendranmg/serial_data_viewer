@@ -56,7 +56,7 @@ class SerialUtils {
     {
       'name': 'Space',
       'value': SerialPortParity.space,
-    }
+    },
   ];
 
   static const flowControl = [
