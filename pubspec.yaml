@@ -13,7 +13,9 @@ dependencies:
   flutter_libserialport: ^0.3.0
   form_builder_validators: ^9.0.0
   get: ^4.6.5
+  msgpack_dart: ^1.0.1
   path_provider: ^2.0.15
+  rust_in_flutter: ^2.8.2
   rxdart: ^0.27.5
   shared_preferences: ^2.1.2
   url_launcher: ^6.1.11

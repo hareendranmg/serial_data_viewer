@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 import 'app/utils/general_utils.dart';
 import 'app/utils/theme_data.dart';
+import 'package:rust_in_flutter/rust_in_flutter.dart';
 
 Future<void> main() async {
+  await RustInFlutter.ensureInitialized();
   await initializeApp();
 
   runApp(
