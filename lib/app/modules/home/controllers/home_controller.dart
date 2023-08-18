@@ -97,14 +97,8 @@ class HomeController extends HomeBaseController {
           });
 
           receivedScrollController.addListener(() {
-            if (receivedScrollController.offset >=
-                receivedScrollController.position.maxScrollExtent - 30) {
-              // User has scrolled to the bottom
-              autoScrollEnabled = true;
-            } else {
-              // User has scrolled up
-              autoScrollEnabled = false;
-            }
+            autoScrollEnabled = receivedScrollController.offset >=
+                receivedScrollController.position.maxScrollExtent - 30;
           });
         }
       }
@@ -137,8 +131,17 @@ class HomeController extends HomeBaseController {
       );
 
       reader = SerialPortReader(port!);
-      subscription =
-          reader?.stream.listen((event) {}, onDone: () {}, onError: (e) {});
+      subscription = reader?.stream.listen(
+        (data) {
+          debugPrint('Data recieved');
+        },
+        onDone: () {
+          debugPrint('onDone Called');
+        },
+        onError: (e) {
+          debugPrint('Error occured');
+        },
+      );
 
       return port;
     } catch (e) {
@@ -247,13 +250,17 @@ class HomeController extends HomeBaseController {
 
         watch.stop();
 
-        print('time to generate data: ${watch.elapsed.inMilliseconds} ms');
+        if (kDebugMode) {
+          print('time to generate data: ${watch.elapsed.inMilliseconds} ms');
+        }
 
         watch.reset();
         watch.start();
         SerialServices.write(port!, generatedData);
         watch.stop();
-        print('Time to send data: ${watch.elapsed.inMilliseconds} ms');
+        if (kDebugMode) {
+          print('Time to send data: ${watch.elapsed.inMilliseconds} ms');
+        }
 
         watch.reset();
         watch.start();
@@ -265,7 +272,9 @@ class HomeController extends HomeBaseController {
         });
 
         watch.stop();
-        print('Time to receive data: ${watch.elapsed.inSeconds} seconds');
+        if (kDebugMode) {
+          print('Time to receive data: ${watch.elapsed.inSeconds} seconds');
+        }
 
         // responseDetailsFormKey.currentState?.fields['data_bytes']
         //     ?.didChange(generatedDataBytes.toString());

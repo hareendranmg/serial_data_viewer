@@ -99,7 +99,7 @@ class SendCustomDataCard extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

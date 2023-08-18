@@ -24,13 +24,11 @@ class SettingsView extends GetView<SettingsController> {
                 case ConnectionState.active:
                   return const Center(child: CircularProgressIndicator());
                 case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Error occured. Please restart the app'),
-                    );
-                  } else {
-                    return const SettingsBody();
-                  }
+                  return snapshot.hasError
+                      ? const Center(
+                          child: Text('Error occured. Please restart the app'),
+                        )
+                      : const SettingsBody();
 
                 default:
                   return const Center(child: CircularProgressIndicator());

@@ -7,8 +7,8 @@ import '../../../../utils/global_widgets.dart';
 import '../../../../utils/theme_data.dart';
 import '../../controllers/home_controller.dart';
 
-class SendGenratedDataCard extends StatelessWidget {
-  const SendGenratedDataCard({super.key, required this.controller});
+class SendGeneratedDataCard extends StatelessWidget {
+  const SendGeneratedDataCard({super.key, required this.controller});
 
   final HomeController controller;
 
@@ -84,7 +84,7 @@ class SendGenratedDataCard extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

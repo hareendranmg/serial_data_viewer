@@ -5,8 +5,9 @@ analyzer:
   - test/*
   plugins:
     - dart_code_metrics
-  strong-mode:
-    implicit-casts: false
+  language:
+    strict-casts: true
+    strict-raw-types: true
   errors:
     missing_required_param: warning
     require_trailing_commas: warning

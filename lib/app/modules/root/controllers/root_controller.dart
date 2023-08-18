@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 
 class RootController extends GetxController {
-  Future initServices() async {
+  Future<dynamic> initServices() async {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => Get.offNamed(Routes.HOME),
     );

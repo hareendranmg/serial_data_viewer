@@ -7,8 +7,8 @@ import '../../../../utils/global_widgets.dart';
 import '../../../../utils/theme_data.dart';
 import '../../controllers/home_controller.dart';
 
-class RecieveDataCard extends StatelessWidget {
-  const RecieveDataCard({super.key, required this.controller});
+class ReceiveDataCard extends StatelessWidget {
+  const ReceiveDataCard({super.key, required this.controller});
 
   final HomeController controller;
 
@@ -69,7 +69,7 @@ class RecieveDataCard extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }
