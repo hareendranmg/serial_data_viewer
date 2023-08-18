@@ -1,6 +1,8 @@
 //! This module is only for demonstration purposes.
 //! You might want to remove this module in production.
 
+use std::collections::HashMap;
+
 use crate::bridge::api::RustOperation;
 use crate::bridge::api::RustRequest;
 use crate::bridge::api::RustResponse;
@@ -49,6 +51,33 @@ pub async fn calculate_something(rust_request: RustRequest) -> RustResponse {
                     dummy_one: 1,
                     dummy_two: 2,
                     dummy_three: vec![3, 4, 5],
+                })
+                .unwrap(),
+            }
+        }
+        RustOperation::Update => RustResponse::default(),
+        RustOperation::Delete => RustResponse::default(),
+    }
+}
+
+pub async fn get_ports(rust_request: RustRequest) -> RustResponse {
+    match rust_request.operation {
+        RustOperation::Create => RustResponse::default(),
+        RustOperation::Read => {
+            #[derive(Serialize)]
+            struct RustResponseSchema {
+                ports:  HashMap<String, String>,
+            }
+
+            let mut ports = HashMap::new();
+            ports.insert(String::from("RUST COM1"), String::from("Description of RUST COM1"));
+            ports.insert(String::from("RUST COM2"), String::from("Description of RUST COM2"));
+            RustResponse {
+                successful: true,
+                // Use `to_vec_named` from `rmp_serde`
+                // to serialize the message.
+                bytes: to_vec_named(&RustResponseSchema {
+                    ports: ports
                 })
                 .unwrap(),
             }

@@ -24,6 +24,14 @@ pub async fn handle_request(request_unique: RustRequestUnique) -> RustResponseUn
         } else {
             RustResponse::default()
         }
+    } else if layered[0] == "serial" {
+        if layered.len() == 1 {
+            RustResponse::default()
+        } else if layered[1] == "getPorts" {
+            sample_functions::get_ports(rust_request).await
+        } else {
+            RustResponse::default()
+        }
     } else {
         RustResponse::default()
     };

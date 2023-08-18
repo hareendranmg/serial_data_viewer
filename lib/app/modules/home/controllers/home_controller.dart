@@ -41,67 +41,67 @@ class HomeController extends HomeBaseController {
 
   Future<void> connectPort() async {
     try {
-      if (connectionFormKey.currentState?.saveAndValidate() ?? false) {
-        isConnectionSaving = true;
-        final data = connectionFormKey.currentState?.value;
-        await box.setInt('baudrate', data?['baudrate'] as int);
-        await box.setInt('databits', data?['databits'] as int);
-        await box.setInt('stopbits', data?['stopbits'] as int);
-        await box.setInt('parity', data?['parity'] as int);
-        // box.write('flowcontrol', data?['flowcontrol']);
+      //   if (connectionFormKey.currentState?.saveAndValidate() ?? false) {
+      //     isConnectionSaving = true;
+      //     final data = connectionFormKey.currentState?.value;
+      //     await box.setInt('baudrate', data?['baudrate'] as int);
+      //     await box.setInt('databits', data?['databits'] as int);
+      //     await box.setInt('stopbits', data?['stopbits'] as int);
+      //     await box.setInt('parity', data?['parity'] as int);
+      //     // box.write('flowcontrol', data?['flowcontrol']);
 
-        final portConfig = SerialPortConfig();
-        portConfig.baudRate = data?['baudrate'] as int;
-        portConfig.bits = data?['databits'] as int;
-        portConfig.stopBits = data?['stopbits'] as int;
-        portConfig.parity = data?['parity'] as int;
+      //     final portConfig = SerialPortConfig();
+      //     portConfig.baudRate = data?['baudrate'] as int;
+      //     portConfig.bits = data?['databits'] as int;
+      //     portConfig.stopBits = data?['stopbits'] as int;
+      //     portConfig.parity = data?['parity'] as int;
 
-        port = await openPort(data?['port'] as String, portConfig);
+      //     port = await openPort(data?['port'] as String, portConfig);
 
-        if (port == null) {
-          Get.dialog(
-            AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                'Unable to connect to the port. Please try again.',
-              ),
-              actions: [
-                OutlinedButton(
-                  onPressed: () => Get.back(),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-        } else {
-          deviceCardKey.currentState?.collapse();
-          bool autoScrollEnabled = true;
+      //     if (port == null) {
+      //       Get.dialog(
+      //         AlertDialog(
+      //           title: const Text('Error'),
+      //           content: const Text(
+      //             'Unable to connect to the port. Please try again.',
+      //           ),
+      //           actions: [
+      //             OutlinedButton(
+      //               onPressed: () => Get.back(),
+      //               child: const Text('OK'),
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     } else {
+      //       deviceCardKey.currentState?.collapse();
+      //       bool autoScrollEnabled = true;
 
-          subscription?.onData((event) {
-            final currentTime = DateTime.now();
-            final customCurrentTimeFormat =
-                '${currentTime.hour}:${currentTime.minute}:${currentTime.second}';
-            receivedResponse +=
-                '$customCurrentTimeFormat ${String.fromCharCodes(event)}';
-            recievedDataFormKey.currentState?.fields['recieved_response']
-                ?.didChange(receivedResponse);
-            if (receivedScrollController.hasClients) {
-              if (autoScrollEnabled) {
-                receivedScrollController.animateTo(
-                  receivedScrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              }
-            }
-          });
+      //       subscription?.onData((event) {
+      //         final currentTime = DateTime.now();
+      //         final customCurrentTimeFormat =
+      //             '${currentTime.hour}:${currentTime.minute}:${currentTime.second}';
+      //         receivedResponse +=
+      //             '$customCurrentTimeFormat ${String.fromCharCodes(event)}';
+      //         recievedDataFormKey.currentState?.fields['recieved_response']
+      //             ?.didChange(receivedResponse);
+      //         if (receivedScrollController.hasClients) {
+      //           if (autoScrollEnabled) {
+      //             receivedScrollController.animateTo(
+      //               receivedScrollController.position.maxScrollExtent,
+      //               duration: const Duration(milliseconds: 500),
+      //               curve: Curves.easeOut,
+      //             );
+      //           }
+      //         }
+      //       });
 
-          receivedScrollController.addListener(() {
-            autoScrollEnabled = receivedScrollController.offset >=
-                receivedScrollController.position.maxScrollExtent - 30;
-          });
-        }
-      }
+      //       receivedScrollController.addListener(() {
+      //         autoScrollEnabled = receivedScrollController.offset >=
+      //             receivedScrollController.position.maxScrollExtent - 30;
+      //       });
+      //     }
+      //   }
     } catch (e) {
       Get.dialog(
         AlertDialog(
@@ -124,34 +124,36 @@ class HomeController extends HomeBaseController {
   }
 
   Future<SerialPort?> openPort(String portName, SerialPortConfig config) async {
-    try {
-      port = await SerialServices.connect(
-        portName: portName,
-        portConfig: config,
-      );
+    return null;
 
-      reader = SerialPortReader(port!);
-      subscription = reader?.stream.listen(
-        (data) {
-          debugPrint('Data recieved');
-        },
-        onDone: () {
-          debugPrint('onDone Called');
-        },
-        onError: (e) {
-          debugPrint('Error occured');
-        },
-      );
+    // try {
+    //   port = await SerialServices.connect(
+    //     portName: portName,
+    //     portConfig: config,
+    //   );
 
-      return port;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error: $e');
-        print(e);
-      }
+    //   reader = SerialPortReader(port!);
+    //   subscription = reader?.stream.listen(
+    //     (data) {
+    //       debugPrint('Data recieved');
+    //     },
+    //     onDone: () {
+    //       debugPrint('onDone Called');
+    //     },
+    //     onError: (e) {
+    //       debugPrint('Error occured');
+    //     },
+    //   );
 
-      return null;
-    }
+    //   return port;
+    // } catch (e) {
+    // if (kDebugMode) {
+    //   print('Error: $e');
+    //   print(e);
+    // }
+
+    //   return null;
+    // }
   }
 
   Future<void> clearRecievedResponse() async {
@@ -189,34 +191,34 @@ class HomeController extends HomeBaseController {
       if (customDataFormKey.currentState?.saveAndValidate() ?? false) {
         customData =
             customDataFormKey.currentState?.value['custom_data'] as String;
-        if (port != null && (port?.isOpen ?? false)) {
-          isCustomDataSending = true;
-          customError = '';
-          customResponse = '';
-          customDataFormKey.currentState?.fields['custom_response']?.reset();
-          port?.flush();
+        // if (port != null && (port?.isOpen ?? false)) {
+        //   isCustomDataSending = true;
+        //   customError = '';
+        //   customResponse = '';
+        //   customDataFormKey.currentState?.fields['custom_response']?.reset();
+        //   port?.flush();
 
-          SerialServices.write(port!, customData);
+        //   SerialServices.write(port!, customData);
 
-          subscription?.onData((event) {
-            customResponse += String.fromCharCodes(event);
-            customDataFormKey.currentState?.fields['custom_response']
-                ?.didChange(customResponse);
-          });
-        } else {
-          Get.dialog(
-            AlertDialog(
-              title: const Text('Error'),
-              content: const Text('Serial Port is not open'),
-              actions: [
-                OutlinedButton(
-                  onPressed: () => Get.back(),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
+        //   subscription?.onData((event) {
+        //     customResponse += String.fromCharCodes(event);
+        //     customDataFormKey.currentState?.fields['custom_response']
+        //         ?.didChange(customResponse);
+        //   });
+        // } else {
+        // Get.dialog(
+        //   AlertDialog(
+        //     title: const Text('Error'),
+        //     content: const Text('Serial Port is not open'),
+        //     actions: [
+        //       OutlinedButton(
+        //         onPressed: () => Get.back(),
+        //         child: const Text('OK'),
+        //       ),
+        //     ],
+        //   ),
+        // );
+        // }
       }
     } catch (e) {
       customError = e.toString();
@@ -227,82 +229,82 @@ class HomeController extends HomeBaseController {
 
   Future<void> sendGeneratedData() async {
     try {
-      if (port != null && (port?.isOpen ?? false)) {
-        final buffer = StringBuffer();
-        final watch = Stopwatch();
+      // if (port != null && (port?.isOpen ?? false)) {
+      //   final buffer = StringBuffer();
+      //   final watch = Stopwatch();
 
-        isGeneratedDataSending = true;
-        await 1.delay();
-        generatedData = '';
-        generatedError = '';
-        generatedResponse = '';
-        port?.flush();
+      //   isGeneratedDataSending = true;
+      //   await 1.delay();
+      //   generatedData = '';
+      //   generatedError = '';
+      //   generatedResponse = '';
+      //   port?.flush();
 
-        watch.reset();
-        watch.start();
+      //   watch.reset();
+      //   watch.start();
 
-        for (int i = 0; i < timesToSend; i++) {
-          buffer.write(pattern);
-        }
+      //   for (int i = 0; i < timesToSend; i++) {
+      //     buffer.write(pattern);
+      //   }
 
-        generatedData = buffer.toString();
-        buffer.clear();
+      //   generatedData = buffer.toString();
+      //   buffer.clear();
 
-        watch.stop();
+      //   watch.stop();
 
-        if (kDebugMode) {
-          print('time to generate data: ${watch.elapsed.inMilliseconds} ms');
-        }
+      //   if (kDebugMode) {
+      //     print('time to generate data: ${watch.elapsed.inMilliseconds} ms');
+      //   }
 
-        watch.reset();
-        watch.start();
-        SerialServices.write(port!, generatedData);
-        watch.stop();
-        if (kDebugMode) {
-          print('Time to send data: ${watch.elapsed.inMilliseconds} ms');
-        }
+      //   watch.reset();
+      //   watch.start();
+      //   SerialServices.write(port!, generatedData);
+      //   watch.stop();
+      //   if (kDebugMode) {
+      //     print('Time to send data: ${watch.elapsed.inMilliseconds} ms');
+      //   }
 
-        watch.reset();
-        watch.start();
+      //   watch.reset();
+      //   watch.start();
 
-        subscription?.onData((event) {
-          generatedResponse += String.fromCharCodes(event);
-          generatedDataFormKey.currentState?.fields['generated_response']
-              ?.didChange(generatedResponse);
-        });
+      //   subscription?.onData((event) {
+      //     generatedResponse += String.fromCharCodes(event);
+      //     generatedDataFormKey.currentState?.fields['generated_response']
+      //         ?.didChange(generatedResponse);
+      //   });
 
-        watch.stop();
-        if (kDebugMode) {
-          print('Time to receive data: ${watch.elapsed.inSeconds} seconds');
-        }
+      //   watch.stop();
+      //   if (kDebugMode) {
+      //     print('Time to receive data: ${watch.elapsed.inSeconds} seconds');
+      //   }
 
-        // responseDetailsFormKey.currentState?.fields['data_bytes']
-        //     ?.didChange(generatedDataBytes.toString());
-        // responseDetailsFormKey.currentState?.fields['response_bytes']
-        //     ?.didChange(generatedResponseBytes.toString());
-        // responseDetailsFormKey.currentState?.fields['elapsed_time']
-        //     ?.didChange(elapsedSeconds.toStringAsFixed(2));
-        // responseDetailsFormKey.currentState?.fields['data_rate']
-        //     ?.didChange(dataRate.toStringAsFixed(2));
-        // responseDetailsFormKey.currentState?.fields['response_rate']
-        //     ?.didChange(responseRate.toStringAsFixed(2));
-        // responseDetailsFormKey.currentState?.fields['speed']?.didChange(
-        //   (responseRate / generatedDataBytes * 100).toStringAsFixed(2),
-        // );
-      } else {
-        Get.dialog(
-          AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Serial Port is not open'),
-            actions: [
-              OutlinedButton(
-                onPressed: () => Get.back(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
+      //   // responseDetailsFormKey.currentState?.fields['data_bytes']
+      //   //     ?.didChange(generatedDataBytes.toString());
+      //   // responseDetailsFormKey.currentState?.fields['response_bytes']
+      //   //     ?.didChange(generatedResponseBytes.toString());
+      //   // responseDetailsFormKey.currentState?.fields['elapsed_time']
+      //   //     ?.didChange(elapsedSeconds.toStringAsFixed(2));
+      //   // responseDetailsFormKey.currentState?.fields['data_rate']
+      //   //     ?.didChange(dataRate.toStringAsFixed(2));
+      //   // responseDetailsFormKey.currentState?.fields['response_rate']
+      //   //     ?.didChange(responseRate.toStringAsFixed(2));
+      //   // responseDetailsFormKey.currentState?.fields['speed']?.didChange(
+      //   //   (responseRate / generatedDataBytes * 100).toStringAsFixed(2),
+      //   // );
+      // } else {
+      // Get.dialog(
+      //   AlertDialog(
+      //     title: const Text('Error'),
+      //     content: const Text('Serial Port is not open'),
+      //     actions: [
+      //       OutlinedButton(
+      //         onPressed: () => Get.back(),
+      //         child: const Text('OK'),
+      //       ),
+      //     ],
+      //   ),
+      // );
+      // }
     } catch (e) {
       if (kDebugMode) rethrow;
       generatedError = e.toString();
@@ -448,10 +450,10 @@ class HomeController extends HomeBaseController {
 
   void disconnectPort() {
     try {
-      if (port?.isOpen ?? false) port?.close();
+      // if (port?.isOpen ?? false) port?.close();
 
-      port?.flush();
-      port?.dispose();
+      // port?.flush();
+      // port?.dispose();
       reader?.close();
       port = null;
       reader = null;

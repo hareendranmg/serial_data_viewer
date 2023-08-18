@@ -23,11 +23,11 @@ class DeviceCard extends StatelessWidget {
       title: Row(
         children: [
           const Expanded(child: Text('Device')),
-          if (controller.port?.isOpen ?? false)
+          if (controller.port != null)
             Chip(
               backgroundColor: Colors.green,
               label: Text(
-                '${controller.port?.productName ?? 'Not available'} (${controller.port?.name})',
+                '${controller.port?.portDescription ?? 'Not available'} (${controller.port?.portName})',
                 style: const TextStyle(
                   color: Colors.white,
                 ),
@@ -79,9 +79,9 @@ class DeviceCard extends StatelessWidget {
                           items: controller.activePorts
                               .map(
                                 (e) => DropdownMenuItem(
-                                  value: e.name,
+                                  value: e.portName,
                                   child: Text(
-                                    '${e.productName ?? 'Not available'}  (${e.name})',
+                                    '${e.portDescription ?? 'Not available'}  (${e.portName})',
                                   ),
                                 ),
                               )
@@ -92,9 +92,9 @@ class DeviceCard extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required()],
                           ),
-                          initialValue: controller.port?.isOpen ?? false
-                              ? controller.port?.name
-                              : null,
+                          // initialValue: controller.port?.isOpen ?? false
+                          //     ? controller.port?.name
+                          //     : null,
                         ),
                       ),
                     ),
@@ -240,16 +240,18 @@ class DeviceCard extends StatelessWidget {
                   child: SizedBox(
                     width: Get.width * 0.1,
                     child: ElevatedButton(
-                      onPressed: controller.isConnectionSaving
-                          ? null
-                          : (controller.port?.isOpen ?? false)
-                              ? controller.disconnectPortDialog
-                              : controller.connectPort,
-                      child: controller.isConnectionSaving
-                          ? const LoadingCircularIndicator()
-                          : (controller.port?.isOpen ?? false)
-                              ? const Text('Disconnect')
-                              : const Text('Connect'),
+                      onPressed: () {},
+                      child: const Text('Connect'),
+                      // onPressed: controller.isConnectionSaving
+                      //     ? null
+                      //     : (controller.port?.isOpen ?? false)
+                      //         ? controller.disconnectPortDialog
+                      //         : controller.connectPort,
+                      // child: controller.isConnectionSaving
+                      //     ? const LoadingCircularIndicator()
+                      //     : (controller.port?.isOpen ?? false)
+                      //         ? const Text('Disconnect')
+                      //         : const Text('Connect'),
                     ),
                   ),
                 ),
