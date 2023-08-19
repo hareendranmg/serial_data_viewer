@@ -402,6 +402,7 @@ dependencies = [
  "rmp-serde",
  "sample_crate",
  "serde",
+ "serial_communication",
  "tokio",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -819,6 +820,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "serial_communication"
+version = "0.1.0"
+dependencies = [
+ "bytemuck",
+ "lazy_static",
+ "rmp-serde",
+ "serde",
+ "tokio",
 ]
 
 [[package]]

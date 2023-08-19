@@ -43,3 +43,4 @@ tokio = { version = "1.28.2", features = ["sync", "macros"] }
 serde = { version = "1.0.164", features = ["derive"] }
 rmp-serde = "1.1.1"
 sample_crate = { path = "../sample_crate" }
+serial_communication = { path = "../serial_communication" }
